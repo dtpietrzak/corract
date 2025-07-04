@@ -1,0 +1,11 @@
+{
+  "name": "basic-app",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "corract": "*"
+  },
+  "scripts": {
+    "dev": "corract"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "create-corract-app",
+  "version": "0.1.0",
+  "bin": {
+    "create-corract-app": "./index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "dependencies": {
+    "corract": "*"
+  }
+}

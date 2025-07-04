@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "corract": [
+        "packages/corract/src"
+      ]
+    }
+  },
+  "include": [
+    "packages/**/*",
+    "apps/**/*"
+  ]
+}
