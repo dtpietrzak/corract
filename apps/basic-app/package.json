@@ -6,6 +6,8 @@
     "corract": "*"
   },
   "scripts": {
-    "dev": "corract"
+    "dev": "corract dev",
+    "build": "corract build",
+    "start": "corract start"
   }
 }

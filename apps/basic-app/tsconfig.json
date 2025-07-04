@@ -1,0 +1,12 @@
+{
+  "extends": "corract/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
+    "moduleResolution": "nodenext",
+    "module": "NodeNext"
+  },
+  "include": [
+    "./"
+  ]
+}
