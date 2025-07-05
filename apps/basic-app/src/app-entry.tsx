@@ -1,4 +1,4 @@
-import { render } from "corract";
+import { render } from "preact";
 
 function App() {
   return <h1>Hello, Corract!</h1>;

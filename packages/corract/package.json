@@ -7,13 +7,39 @@
     "corract": "./bin/corract.js"
   },
   "exports": {
+    "./tsconfig.json": "./src/tsconfig.base.json",
+    "./jsx-runtime": {
+      "import": "./dist/jsx/jsx-runtime.js",
+      "default": "./dist/jsx/jsx-runtime.js",
+      "types": "./dist/jsx/jsx-runtime.d.ts"
+    },
+    "./jsx-dev-runtime": {
+      "import": "./dist/jsx/jsx-runtime.js",
+      "default": "./dist/jsx/jsx-runtime.js",
+      "types": "./dist/jsx/jsx-runtime.d.ts"
+    },
     ".": {
       "import": "./dist/index.js",
+      "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "dev": "tsc -w -p tsconfig.json"
+    "dev": "tsx ./dist/index.js"
+  },
+  "dependencies": {
+    "@preact/preset-vite": "^2.10.2",
+    "express": "^5.1.0",
+    "isobject": "^4.0.0",
+    "preact": "^10.26.9",
+    "tsx": "^4.20.3",
+    "vite": "^7.0.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.0.10",
+    "esbuild": "^0.25.5",
+    "esbuild-register": "^3.6.0"
   }
 }

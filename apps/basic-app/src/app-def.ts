@@ -1,20 +1,17 @@
 import { setupCorract } from "corract";
+import { globalMiddleware } from "./middleware/global";
+
+export type Routes = keyof typeof routes;
+export type RouteMiddleWare<R extends Routes> = typeof routes[R]["middleware"];
 
 export const routes = {
-  home: {
-    path: "/",
-    middleware: [/* some functions */],
-    // maybe component import path, etc
+  "/": {
+    middleware: [globalMiddleware],
   },
-  profile: {
-    path: "/profile",
-    middleware: [/* ... */],
+  "/profile": {
+    middleware: [globalMiddleware],
   },
-} as const;
-
-export type RouteKey = keyof typeof routes;
-
-export type RouteConfig = typeof routes[RouteKey];
+};
 
 setupCorract({
   routes: routes,
