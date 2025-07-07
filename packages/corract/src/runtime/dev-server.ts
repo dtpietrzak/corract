@@ -3,7 +3,12 @@ import "esbuild-register/dist/node";
 import { createServer } from "vite";
 import express from "express";
 
-import { buildAppEntry, registerRoutes } from "../routes";
+import {
+  buildAppEntry,
+  buildPages,
+  parseRoutes,
+  registerRoutes,
+} from "../routes";
 import type { RouteConfig } from "../routes/_types";
 
 export async function startDev(props: {
@@ -31,9 +36,15 @@ export async function startDev(props: {
     routes: props.routes,
   });
 
+  const routeStrings = parseRoutes(props.routes);
+
+  await buildPages({
+    routeStrings: routeStrings,
+  });
+
   buildAppEntry({
-    routes: props.routes,
-  })
+    routeStrings: routeStrings,
+  });
 
   app.listen(3000);
   console.log("Corract dev server running at http://localhost:3000");

@@ -4,7 +4,7 @@ export * from "preact/jsx-runtime";
 
 import type { Request, Response, NextFunction } from "express";
 import type { SetupCorractOptions, Mode, RouteConfig, MiddlewareFunction } from "./_types";
-import { checkRoutes } from "./routes";
+import { checkRoutes, parseRoutes } from "./routes";
 import { runtimeDistributor } from "./runtime/_distributor";
 
 export const setupCorract = <Routes extends RouteConfig>(

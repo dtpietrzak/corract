@@ -6,6 +6,13 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import isObject from "isobject";
 
+export type RouteStringsParsed = {
+  raw: string;
+  sanitized: string;
+  importString: string;
+  jsxString: string;
+};
+
 export const checkRoutes = (routes: RouteConfig): boolean => {
   if (!isObject(routes)) {
     throw new Error("Routes must be a RouteConfig object!");
@@ -82,20 +89,78 @@ export const registerRoutes = (props: {
   }
 };
 
-export const buildAppEntry = (props: {
-  routes: RouteConfig;
-}) => {
-  const routePaths = Object.keys(props.routes);
-  // Generate imports and routes
-  const imports = routePaths
-    .map(
-      (routePath, i) => `import Page${i} from "./pages${routePath}";`,
-    )
-    .join("\n");
+export const parseRoutes = (routes: RouteConfig): RouteStringsParsed[] => {
+  const routePaths = Object.keys(routes);
+  return routePaths.map((routePath, i) => {
+    console.log(`Processing route: ${routePath}`);
+    const pathParts = routePath.split("/");
+    const sanitizedPath = pathParts.map((pathPart) => {
+      if (pathPart.startsWith(":")) return `(${pathPart.slice(1)})`;
+      return pathPart;
+    }).join("/");
+    return {
+      raw: routePath,
+      sanitized: sanitizedPath,
+      importString: `import Page${i} from "./pages${sanitizedPath}";`,
+      jsxString: `      <Page${i} path="${routePath}" />`,
+    };
+  });
+};
 
-  const routesJsx = routePaths
-    .map((routePath, i) => `      <Page${i} path="${routePath}" />`)
-    .join("\n");
+async function fileExists(path: string): Promise<boolean> {
+  try {
+    await fs.access(path, fs.constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export const buildPages = async (props: {
+  routeStrings: RouteStringsParsed[];
+}) => {
+  await Promise.all(props.routeStrings.map(async (route) => {
+    // check if file already exists
+    const filePath = `src/pages${route.sanitized}/index.tsx`;
+    console.log(`Checking if file exists: ${filePath}`);
+
+    if (await fileExists(filePath)) return;
+    console.log(`File does not exist, generating: ${filePath}`);
+
+    // Ensure the directory exists
+    const dirPath = `src/pages${route.sanitized}`;
+
+    console.log(`Ensuring directory exists: ${dirPath}`);
+    await fs.mkdir(dirPath, { recursive: true });
+    console.log(`Generating page at: ${filePath}`);
+
+    // Create the page template
+    const pageTemplate = `
+import { Page } from "corract";
+
+export const MyPage: Page<"${route.raw}"> = (props) => {
+  return (
+    <>
+      <h1>My Page</h1>
+      <a href="/">Go Home</a>
+    </>
+  );
+}
+
+export default MyPage;
+`;
+
+    fs.writeFile(filePath, pageTemplate);
+  }));
+};
+
+export const buildAppEntry = (props: {
+  routeStrings: RouteStringsParsed[];
+}) => {
+  const imports = props.routeStrings.map((route) => route.importString).join(
+    "\n",
+  );
+  const jsx = props.routeStrings.map((route) => route.jsxString).join("\n");
 
   const content = `
 /**
@@ -112,12 +177,13 @@ export const buildAppEntry = (props: {
 
 import { render } from "preact";
 import Router from "preact-router";
+
 ${imports}
 
 function App() {
   return (
     <Router>
-${routesJsx}
+${jsx}
     </Router>
   );
 }
