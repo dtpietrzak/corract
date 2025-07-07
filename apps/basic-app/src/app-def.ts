@@ -11,7 +11,7 @@ export const routes = {
   "/profile": {
     middleware: [globalMiddleware],
   },
-};
+} as const;
 
 setupCorract({
   routes: routes,

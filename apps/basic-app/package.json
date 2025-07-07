@@ -3,7 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "corract": "*"
+    "corract": "*",
+    "preact": "^10.26.9",
+    "preact-async-route": "^2.2.1",
+    "preact-router": "^4.1.2"
   },
   "scripts": {
     "dev": "corract dev",

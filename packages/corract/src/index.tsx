@@ -27,13 +27,13 @@ export const middlewareHandler = async (
   next: NextFunction,
   middleware: MiddlewareFunction,
 ) => {
-  const serverDerivedData = await middleware(req, res)
+  const serverDerivedData = await middleware({
+    req: req,
+    res: res,
+  });
   // @ts-ignore
   req.serverDerivedData = serverDerivedData;
   next();
 };
 
-export {
-  MiddlewareFunction,
-  RouteConfig,
-}
+export * from "./_types";
