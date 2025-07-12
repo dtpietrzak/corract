@@ -1,12 +1,14 @@
-import { Page } from "corract";
+import { Page, useServerState } from 'corract'
 
-export const Profile: Page<"/profile"> = (props) => {
+export const Profile: Page<'/profile', AppRoutes> = (props) => {
+  // const thing = useServerState(props.route)
+
   return (
     <>
       <h1>Profile Page</h1>
-      <a href="/">Go to Home</a>
+      <a href={'/'}>Go to Home</a>
     </>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

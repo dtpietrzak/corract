@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "corract dev",
+    "build-dev": "corract dev --build",
     "build": "corract build",
     "start": "corract start"
   }
