@@ -1,30 +1,28 @@
-import type { Mode, RouteConfig } from "../_types";
-import { startDev } from "./dev-server";
+import type { Mode, RouteConfig } from '../_types'
+import { startDev } from './dev-server'
 
 export const runtimeDistributor = (props: {
   mode: Mode;
-  routes: RouteConfig;
+  routeConfig: RouteConfig;
 }) => {
   const scriptMap = {
-    dev: "runtime/dev-server.ts",
-    build: "runtime/build.ts",
-    start: "runtime/start-server.ts",
-  };
+    dev: 'runtime/dev-server.ts',
+    build: 'runtime/build.ts',
+    start: 'runtime/start-server.ts',
+  }
 
   if (!scriptMap[props.mode]) {
-    console.error(
-      `Unknown command "${props.mode}". Use one of: dev, build, start.`,
-    );
-    process.exit(1);
+    console.error(`Unknown command "${props.mode}". Use one of: dev, build, start.`)
+    process.exit(1)
   }
 
   switch (props.mode) {
-    case "dev":
+    case 'dev':
       startDev({
-        routes: props.routes,
-      });
-      break;
+        routeConfig: props.routeConfig,
+      })
+      break
     default:
-      throw new Error(`Unknown CORRACT_MODE: ${props.mode}`);
+      throw new Error(`Unknown CORRACT_MODE: ${props.mode}`)
   }
-};
+}
