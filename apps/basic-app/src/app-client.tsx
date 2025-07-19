@@ -10,6 +10,7 @@
  * with different ui libraries, routing libraries, state management, etc.
  */
 
+import type { ClientProps } from 'corract'
 import { render } from 'preact'
 import { Router, Route } from 'preact-router'
 
@@ -22,13 +23,27 @@ import Page_profile_demo from './pages/profile/demo'
 import Navbar from './layouts/Navbar'
 import Profile from './layouts/Profile'
 
-export function Client() {
+let ssrRoutePath: string | undefined
+const pathHandler = <T extends keyof typeof routes>(routePath: T) => {
+  if (ssrRoutePath) {
+    if (ssrRoutePath === routePath) {
+      return '/' as typeof routePath
+    } else {
+      return '/404' as unknown as typeof routePath
+    }
+  } else {
+    return routePath
+  }
+}
+
+export function Client(props?: ClientProps) {
+  ssrRoutePath = props?.routePath as string | undefined
   return (
     <Router>
-      <Route routes={routes} route={routes['/']} path={'/'} component={_Navbar}/>
-      <Route routes={routes} route={routes['/profile']} path={'/profile'} component={_Navbar}/>
-      <Route routes={routes} route={routes['/profile/:id']} path={'/profile/:id'} component={_Profile}/>
-      <Route routes={routes} route={routes['/profile/demo']} path={'/profile/demo'} component={Page_profile_demo}/>
+      <Route routes={routes} route={routes['/']} path={pathHandler('/')} component={_Navbar}/>
+      <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={_Navbar}/>
+      <Route routes={routes} route={routes['/profile/:id']} path={pathHandler('/profile/:id')} component={_Profile}/>
+      <Route routes={routes} route={routes['/profile/demo']} path={pathHandler('/profile/demo')} component={Page_profile_demo}/>
     </Router>
   )
 }
@@ -37,8 +52,8 @@ function _Navbar() {
   return (
     <Navbar>
       <Router>
-        <Route routes={routes} route={routes['/']} path={'/'} component={Page_}/>
-        <Route routes={routes} route={routes['/profile']} path={'/profile'} component={_Navbar_Profile}/>
+        <Route routes={routes} route={routes['/']} path={pathHandler('/')} component={Page_}/>
+        <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={_Navbar_Profile}/>
       </Router>
     </Navbar>
   )
@@ -48,7 +63,7 @@ function _Profile() {
   return (
     <Profile>
       <Router>
-        <Route routes={routes} route={routes['/profile/:id']} path={'/profile/:id'} component={Page_profile__id}/>
+        <Route routes={routes} route={routes['/profile/:id']} path={pathHandler('/profile/:id')} component={Page_profile__id}/>
       </Router>
     </Profile>
   )
@@ -58,7 +73,7 @@ function _Navbar_Profile() {
   return (
     <Profile>
       <Router>
-        <Route routes={routes} route={routes['/profile']} path={'/profile'} component={Page_profile}/>
+        <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={Page_profile}/>
       </Router>
     </Profile>
   )
