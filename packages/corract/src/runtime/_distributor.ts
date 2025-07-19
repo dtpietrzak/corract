@@ -1,9 +1,9 @@
-import type { Mode, RouteConfig } from '../_types'
+import type { Mode, RouteConfig, StartCorractOptions } from '../_types'
 import { startDev } from './dev-server'
 
 export const runtimeDistributor = (props: {
   mode: Mode;
-  routeConfig: RouteConfig;
+  options: StartCorractOptions<RouteConfig>;
 }) => {
   const scriptMap = {
     dev: 'runtime/dev-server.ts',
@@ -19,7 +19,7 @@ export const runtimeDistributor = (props: {
   switch (props.mode) {
     case 'dev':
       startDev({
-        routeConfig: props.routeConfig,
+        options: props.options,
       })
       break
     default:

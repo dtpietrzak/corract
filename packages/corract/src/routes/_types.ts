@@ -3,6 +3,7 @@
 
 import type { Request, Response } from 'express'
 import type { SuperJsonValue } from '../_types'
+import type { ComponentChildren, JSX } from 'preact'
 
 export type MiddlewareProps = {
   req: Request;
@@ -21,13 +22,16 @@ export type MiddlewareReturn<T extends MiddlewareFunction> = T extends
 (...args: any[]) => Promise<infer R> ? R : never
 
 export type LayoutProps = {
-  children: preact.ComponentChildren;
+  children: ComponentChildren;
 }
 
 export type LayoutComponent = (props: LayoutProps) => preact.JSX.Element
 
-export type RouteConfigItem<M extends SuperJsonValue = any> = {
-  middleware?: readonly MiddlewareFunction<M>[];
+export type RouteConfigItem<
+  // eslint-disable-next-line @stylistic/max-len
+  MW extends readonly MiddlewareFunction<SuperJsonValue>[] = readonly MiddlewareFunction<SuperJsonValue>[],
+> = {
+  middleware?: MW;
   layouts?: readonly LayoutComponent[];
   meta?: readonly string[];
   title?: string;
@@ -60,7 +64,7 @@ export type Page<
   _AppRoutes extends AppRoutes<Path> = AppRoutes,
 > = (
   props: PageProps<Path, _AppRoutes>,
-) => preact.JSX.Element
+) => JSX.Element
 
 export interface CorractRequest extends Request {
   __SSR_DATA__?: Record<string, SuperJsonValue>;

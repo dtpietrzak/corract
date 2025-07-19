@@ -2,19 +2,20 @@ import 'esbuild-register/dist/node'
 
 import { createServer } from 'vite'
 import express from 'express'
+import render from 'preact-render-to-string'
 
 import {
-  buildAppEntry,
+  buildAppClient,
   buildPages,
   extendRouteConfig,
   registerRoutes,
 } from '../routes'
-import type { RouteConfig } from '../routes/_types'
+import type { RouteConfig, StartCorractOptions } from '../_types'
 
 export async function startDev(props: {
-  routeConfig: RouteConfig;
+  options: StartCorractOptions<RouteConfig>;
 }) {
-  const app = express()
+  const server = express()
 
   const vite = await createServer({
     appType: 'custom',
@@ -26,17 +27,26 @@ export async function startDev(props: {
     },
   })
 
-  app.use(vite.middlewares)
+  server.use(vite.middlewares)
 
   console.info('Using Vite config at:', vite.config.configFile, '\n')
 
+  // compile each index.html entry point for each route
+  // this will be used to serve the initial HTML for each route
+  // and will also be used to build the app entry point
+  // for the client-side routing
+  // ...
+
+  const clientHtml = render(props.options.client)
+
   registerRoutes({
-    app: app,
+    server: server,
     vite: vite,
-    routeConfig: props.routeConfig,
+    routeConfig: props.options.routeConfig,
+    clientHtml: clientHtml,
   })
 
-  const extendedRouteConfig = extendRouteConfig(props.routeConfig)
+  const extendedRouteConfig = extendRouteConfig(props.options.routeConfig)
 
   if (process.argv.includes('--build')) {
     console.info('Building pages...')
@@ -46,11 +56,11 @@ export async function startDev(props: {
   }
 
   if (process.argv.includes('--build')) {
-    await buildAppEntry({
+    await buildAppClient({
       extendedRouteConfig: extendedRouteConfig,
     })
   }
 
-  app.listen(3000)
+  server.listen(3000)
   console.info('Corract dev server running at http://localhost:3000')
 }

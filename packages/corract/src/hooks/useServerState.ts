@@ -1,24 +1,23 @@
-import { RouteConfigItem } from '../_types'
+import type { MiddlewareFunction, RouteConfigItem } from '../_types'
 
 export const useServerState = <
-  AppRoute extends RouteConfigItem,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  MW extends readonly MiddlewareFunction<any>[],
 >(
-  routeConfig: AppRoute,
-): AppRoute['middleware'] => {
-  if (typeof window === 'undefined') {
-    return {
-      title: '',
-      meta: [],
-      data: {},
-    } as unknown as AppRoute['middleware']
+  routeConfig: RouteConfigItem<MW>,
+): {
+  [I in keyof MW]: MW[I] extends MiddlewareFunction<infer Data>
+    ? Data
+    : never
+} => {
+  if (typeof window !== 'undefined' && routeConfig.middleware?.length) {
+    return routeConfig.middleware.map((middleware) => {
+      const middlewareResult = window.__SSR_DATA__?.[middleware.name]
+      return middlewareResult?.data
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    }) as any
   } else {
-    const middlewareData = (routeConfig.middleware ?? []).map((middleware) => {
-      return (
-      // @ts-ignore
-        window.__SSR_DATA__[middleware.name]
-      )
-    })
-
-    return middlewareData as AppRoute['middleware']
+    console.log('do we even get here?')
+    throw new Error('useServerState can only be used in server-side rendered routes.')
   }
 }

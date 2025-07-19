@@ -22,7 +22,7 @@ import Page_profile_demo from './pages/profile/demo'
 import Navbar from './layouts/Navbar'
 import Profile from './layouts/Profile'
 
-function App() {
+export function Client() {
   return (
     <Router>
       <Route routes={routes} route={routes['/']} path={'/'} component={_Navbar}/>
@@ -64,4 +64,6 @@ function _Navbar_Profile() {
   )
 }
 
-render(<App/>, document.getElementById('app') as HTMLElement)
+if (typeof window !== 'undefined') {
+  render(<Client/>, document.getElementById('app') as HTMLElement)
+}

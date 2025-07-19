@@ -21,9 +21,10 @@ export const checkRoutes = (routes: RouteConfig): boolean => {
 }
 
 export const registerRoutes = (props: {
-  app: Express;
+  server: Express;
   vite: ViteDevServer;
   routeConfig: RouteConfig;
+  clientHtml: string;
 }): void => {
   for (const routePath of Object.keys(props.routeConfig)) {
     const routeConfig = props.routeConfig[routePath]
@@ -61,7 +62,9 @@ export const registerRoutes = (props: {
       const script = `<script>window.__SSR_DATA__ = ${
         JSON.stringify(data)
       };</script>`
-      const dataInjected = html.replace('</body>', `${script}</body>`)
+      const dataInjected = html
+        .replace('</body>', `${script}</body>`)
+        .replace('<div id="app"></div>', `<div id="app">${props.clientHtml}</div>`)
 
       const transformed = await props.vite.transformIndexHtml(
         req.url,
@@ -72,7 +75,7 @@ export const registerRoutes = (props: {
     }
 
     // Register route with middleware and handler
-    props.app.get(routePath, ...middlewareFunctions, handler)
+    props.server.get(routePath, ...middlewareFunctions, handler)
   }
 }
 
@@ -145,7 +148,7 @@ type LayoutVariants = Record<string, {
   nested: string;
 }[]>[]
 
-export const buildAppEntry = async(props: {
+export const buildAppClient = async(props: {
   extendedRouteConfig: RouteConfigExtended;
 }) => {
   const layoutVariants: LayoutVariants = []
@@ -212,7 +215,7 @@ export const buildAppEntry = async(props: {
   const routeString = (path: string, nested: string, pageName: string) => `<Route routes={routes} route={routes['${path}']} path={'${path}'} component={${nested ? `_${nested}` : pageName}}/>`
 
   const jsx = layoutVariants.map((layoutVariant, i) => {
-    if (i === 0) return `function App() {
+    if (i === 0) return `export function Client() {
   return (
     <Router>
       ${layoutVariants[0][''].map((layoutVariant) => routeString(layoutVariant.path, layoutVariant.nested, layoutVariant.pageName)).join('\n      ')}
@@ -256,12 +259,14 @@ ${layoutImports}
 
 ${jsx}
 
-render(<App/>, document.getElementById('app') as HTMLElement)
+if (typeof window !== 'undefined') {
+  render(<Client/>, document.getElementById('app') as HTMLElement)
+}
 `
 
-  // Write directly to the app's src/app-entry.tsx
-  await fs.writeFile('src/app-entry.tsx', content)
-  console.info('Generated src/app-entry.tsx')
+  // Write directly to the app's src/app-client.tsx
+  await fs.writeFile('src/app-client.tsx', content)
+  console.info('Generated src/app-client.tsx')
 }
 
 async function fileExists(path: string): Promise<boolean> {

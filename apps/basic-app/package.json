@@ -9,9 +9,9 @@
     "preact-router": "^4.1.2"
   },
   "scripts": {
-    "dev": "corract dev",
-    "build-dev": "corract dev --build",
-    "build": "corract build",
-    "start": "corract start"
+    "dev": "corract-cli dev",
+    "build-dev": "corract-cli dev --build",
+    "build": "corract-cli build",
+    "start": "corract-cli start"
   }
 }
