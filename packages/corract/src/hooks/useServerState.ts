@@ -17,7 +17,7 @@ export const useServerState = <
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }) as any
   } else {
-    console.log('do we even get here?')
-    throw new Error('useServerState can only be used in server-side rendered routes.')
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return [] as any
   }
 }

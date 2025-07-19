@@ -1,10 +1,16 @@
+import type { JSX } from 'preact'
 import type { RouteConfig } from './routes/_types'
 
 export type Mode = 'dev' | 'build' | 'start'
 
-export type StartCorractOptions<Routes extends RouteConfig> = {
-  routeConfig: Routes;
-  client: preact.VNode;
+export type ClientProps<RC extends RouteConfig = RouteConfig> = {
+  routePath?: keyof RC;
+}
+
+export type StartCorractOptions<RC extends RouteConfig> = {
+  routeConfig: RC;
+  // eslint-disable-next-line no-unused-vars
+  client: (props: ClientProps<RC>) => JSX.Element;
 }
 
 export * from './routes/_types'

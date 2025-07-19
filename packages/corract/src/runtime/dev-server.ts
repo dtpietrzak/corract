@@ -2,7 +2,6 @@ import 'esbuild-register/dist/node'
 
 import { createServer } from 'vite'
 import express from 'express'
-import render from 'preact-render-to-string'
 
 import {
   buildAppClient,
@@ -31,19 +30,10 @@ export async function startDev(props: {
 
   console.info('Using Vite config at:', vite.config.configFile, '\n')
 
-  // compile each index.html entry point for each route
-  // this will be used to serve the initial HTML for each route
-  // and will also be used to build the app entry point
-  // for the client-side routing
-  // ...
-
-  const clientHtml = render(props.options.client)
-
   registerRoutes({
     server: server,
     vite: vite,
-    routeConfig: props.options.routeConfig,
-    clientHtml: clientHtml,
+    options: props.options,
   })
 
   const extendedRouteConfig = extendRouteConfig(props.options.routeConfig)

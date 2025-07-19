@@ -1,10 +1,13 @@
 import type { Express, NextFunction, RequestHandler, Response } from 'express'
 import type { ViteDevServer } from 'vite'
 import type { CorractRequest, RouteConfig, RouteConfigExtended } from './_types'
+import type { StartCorractOptions } from '../_types'
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import isObject from 'isobject'
+import render from 'preact-render-to-string'
+import type { VNode } from 'preact'
 
 export const checkRoutes = (routes: RouteConfig): boolean => {
   if (!isObject(routes)) {
@@ -23,11 +26,10 @@ export const checkRoutes = (routes: RouteConfig): boolean => {
 export const registerRoutes = (props: {
   server: Express;
   vite: ViteDevServer;
-  routeConfig: RouteConfig;
-  clientHtml: string;
+  options: StartCorractOptions<RouteConfig>;
 }): void => {
-  for (const routePath of Object.keys(props.routeConfig)) {
-    const routeConfig = props.routeConfig[routePath]
+  for (const routePath of Object.keys(props.options.routeConfig)) {
+    const routeConfig = props.options.routeConfig[routePath]
 
     // Destructure middleware or use empty array if none
     const middlewares = routeConfig.middleware || []
@@ -56,15 +58,29 @@ export const registerRoutes = (props: {
     // Compose the final handler
     const handler = async(req: CorractRequest, res: Response) => {
       props.vite.config.logger.info(`Transforming HTML for ${req.url}`)
-      const html = await fs.readFile(path.resolve('index.html'), 'utf-8')
+      const baseHtml = await fs.readFile(path.resolve('index.html'), 'utf-8')
+
+      // compile each index.html entry point for each route
+      // this will be used to serve the initial HTML for each route
+      // and will also be used to build the app entry point
+      // for the client-side routing
+      // ...
+
+      const Client = props.options.client
+      // @ts-ignore
+      Client.props = {
+        routePath: routePath as keyof RouteConfig,
+      }
+      // @ts-ignore
+      const clientHtml = render(Client)
 
       const data = req.__SSR_DATA__ || {}
       const script = `<script>window.__SSR_DATA__ = ${
         JSON.stringify(data)
       };</script>`
-      const dataInjected = html
+      const dataInjected = baseHtml
         .replace('</body>', `${script}</body>`)
-        .replace('<div id="app"></div>', `<div id="app">${props.clientHtml}</div>`)
+        .replace('<div id="app"></div>', `<div id="app">${clientHtml}</div>`)
 
       const transformed = await props.vite.transformIndexHtml(
         req.url,
@@ -212,10 +228,11 @@ export const buildAppClient = async(props: {
     .map((layout) => `import ${layout.name} from '${layout.filePath}'`)
     .join('\n')
 
-  const routeString = (path: string, nested: string, pageName: string) => `<Route routes={routes} route={routes['${path}']} path={'${path}'} component={${nested ? `_${nested}` : pageName}}/>`
+  const routeString = (path: string, nested: string, pageName: string) => `<Route routes={routes} route={routes['${path}']} path={pathHandler('${path}')} component={${nested ? `_${nested}` : pageName}}/>`
 
   const jsx = layoutVariants.map((layoutVariant, i) => {
-    if (i === 0) return `export function Client() {
+    if (i === 0) return `export function Client(props?: ClientProps) {
+  ssrRoutePath = props?.routePath as string | undefined
   return (
     <Router>
       ${layoutVariants[0][''].map((layoutVariant) => routeString(layoutVariant.path, layoutVariant.nested, layoutVariant.pageName)).join('\n      ')}
@@ -249,6 +266,7 @@ export const buildAppClient = async(props: {
  * with different ui libraries, routing libraries, state management, etc.
  */
 
+import type { ClientProps } from 'corract'
 import { render } from 'preact'
 import { Router, Route } from 'preact-router'
 
@@ -256,6 +274,19 @@ import { routes } from './app-def'
 
 ${pageImports}
 ${layoutImports}
+
+let ssrRoutePath: string | undefined
+const pathHandler = <T extends keyof typeof routes>(routePath: T) => {
+  if (ssrRoutePath) {
+    if (ssrRoutePath === routePath) {
+      return '/' as typeof routePath
+    } else {
+      return '/404' as unknown as typeof routePath
+    }
+  } else {
+    return routePath
+  }
+}
 
 ${jsx}
 
