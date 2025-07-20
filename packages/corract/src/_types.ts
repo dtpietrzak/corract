@@ -1,10 +1,11 @@
 import type { JSX } from 'preact'
-import type { RouteConfig } from './routes/_types'
+import type { RouteConfig, SuperJsonValue } from './_types'
 
 export type Mode = 'dev' | 'build' | 'start'
 
 export type ClientProps<RC extends RouteConfig = RouteConfig> = {
   routePath?: keyof RC;
+  middlewareData?: Record<string, SuperJsonValue>;
 }
 
 export type StartCorractOptions<RC extends RouteConfig> = {

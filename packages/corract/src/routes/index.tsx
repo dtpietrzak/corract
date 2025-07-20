@@ -7,7 +7,6 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import isObject from 'isobject'
 import render from 'preact-render-to-string'
-import type { VNode } from 'preact'
 
 export const checkRoutes = (routes: RouteConfig): boolean => {
   if (!isObject(routes)) {
@@ -42,9 +41,7 @@ export const registerRoutes = (props: {
             res: res,
           })
           // Attach the derived data to the request object
-          if (!req.__SSR_DATA__) {
-            req.__SSR_DATA__ = {}
-          }
+          if (!req.__SSR_DATA__) req.__SSR_DATA__ = {}
           req.__SSR_DATA__[middleware.name] = ssrData
           next()
         } catch(error) {
@@ -70,6 +67,7 @@ export const registerRoutes = (props: {
       // @ts-ignore
       Client.props = {
         routePath: routePath as keyof RouteConfig,
+        middlewareData: req.__SSR_DATA__,
       }
       // @ts-ignore
       const clientHtml = render(Client)
@@ -80,7 +78,7 @@ export const registerRoutes = (props: {
       };</script>`
       const dataInjected = baseHtml
         .replace('</body>', `${script}</body>`)
-        .replace('<div id="app"></div>', `<div id="app">${clientHtml}</div>`)
+        .replace('<div id="dry-app">', `<div id="dry-app">${clientHtml}</div>`)
 
       const transformed = await props.vite.transformIndexHtml(
         req.url,
@@ -234,9 +232,13 @@ export const buildAppClient = async(props: {
     if (i === 0) return `export function Client(props?: ClientProps) {
   ssrRoutePath = props?.routePath as string | undefined
   return (
-    <Router>
-      ${layoutVariants[0][''].map((layoutVariant) => routeString(layoutVariant.path, layoutVariant.nested, layoutVariant.pageName)).join('\n      ')}
-    </Router>
+    <ServerStateProvider
+      middlewareData={props?.middlewareData}
+    >
+      <Router>
+        ${layoutVariants[0][''].map((layoutVariant) => routeString(layoutVariant.path, layoutVariant.nested, layoutVariant.pageName)).join('\n        ')}
+      </Router>
+    </ServerStateProvider>
   )
 }`
 
@@ -269,6 +271,7 @@ export const buildAppClient = async(props: {
 import type { ClientProps } from 'corract'
 import { render } from 'preact'
 import { Router, Route } from 'preact-router'
+import { ServerStateProvider } from 'corract'
 
 import { routes } from './app-def'
 

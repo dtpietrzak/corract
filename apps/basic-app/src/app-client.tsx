@@ -13,6 +13,7 @@
 import type { ClientProps } from 'corract'
 import { render } from 'preact'
 import { Router, Route } from 'preact-router'
+import { ServerStateProvider } from 'corract'
 
 import { routes } from './app-def'
 
@@ -39,12 +40,16 @@ const pathHandler = <T extends keyof typeof routes>(routePath: T) => {
 export function Client(props?: ClientProps) {
   ssrRoutePath = props?.routePath as string | undefined
   return (
-    <Router>
-      <Route routes={routes} route={routes['/']} path={pathHandler('/')} component={_Navbar}/>
-      <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={_Navbar}/>
-      <Route routes={routes} route={routes['/profile/:id']} path={pathHandler('/profile/:id')} component={_Profile}/>
-      <Route routes={routes} route={routes['/profile/demo']} path={pathHandler('/profile/demo')} component={Page_profile_demo}/>
-    </Router>
+    <ServerStateProvider
+      middlewareData={props?.middlewareData}
+    >
+      <Router>
+        <Route routes={routes} route={routes['/']} path={pathHandler('/')} component={_Navbar}/>
+        <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={_Navbar}/>
+        <Route routes={routes} route={routes['/profile/:id']} path={pathHandler('/profile/:id')} component={_Profile}/>
+        <Route routes={routes} route={routes['/profile/demo']} path={pathHandler('/profile/demo')} component={Page_profile_demo}/>
+      </Router>
+    </ServerStateProvider>
   )
 }
 
