@@ -1,26 +1,11 @@
 import type { Express, NextFunction, RequestHandler, Response } from 'express'
 import type { ViteDevServer } from 'vite'
-import type { CorractRequest, RouteConfig, RouteConfigExtended } from './_types'
+import type { CorractRequest, RouteConfig, RouteConfigExtended } from '_types'
 import type { StartCorractOptions } from '../_types'
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import isObject from 'isobject'
 import render from 'preact-render-to-string'
-
-export const checkRoutes = (routes: RouteConfig): boolean => {
-  if (!isObject(routes)) {
-    throw new Error('Routes must be a RouteConfig object!')
-  }
-
-  for (const routePath of Object.keys(routes)) {
-    if (typeof routePath !== 'string' || !routePath.startsWith('/')) {
-      throw new Error(`Invalid route: ${routePath}. Routes must be strings starting with '/'`)
-    }
-  }
-
-  return true
-}
 
 export const registerRoutes = (props: {
   server: Express;

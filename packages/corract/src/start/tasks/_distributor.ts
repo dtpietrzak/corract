@@ -1,4 +1,4 @@
-import type { Mode, RouteConfig, StartCorractOptions } from '../_types'
+import type { Mode, RouteConfig, StartCorractOptions } from '_types'
 import { startDev } from './dev-server'
 
 export const runtimeDistributor = (props: {

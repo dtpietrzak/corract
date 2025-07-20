@@ -8,8 +8,8 @@ import {
   buildPages,
   extendRouteConfig,
   registerRoutes,
-} from '../routes'
-import type { RouteConfig, StartCorractOptions } from '../_types'
+} from '../../routes'
+import type { RouteConfig, StartCorractOptions } from '_types'
 
 export async function startDev(props: {
   options: StartCorractOptions<RouteConfig>;

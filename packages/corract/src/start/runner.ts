@@ -2,9 +2,9 @@
 
 export type * from 'preact/jsx-runtime'
 
-import type { StartCorractOptions, Mode, RouteConfig } from './_types'
-import { checkRoutes } from './routes'
-import { runtimeDistributor } from './runtime/_distributor'
+import type { StartCorractOptions, Mode, RouteConfig } from '../_types'
+import { validateRouteConfig } from '../processes/shared/validateRouteConfig'
+import { runtimeDistributor } from './tasks/_distributor'
 
 let initialized = false
 
@@ -19,7 +19,7 @@ export const startCorract = <Routes extends RouteConfig>(
 
   const mode: Mode = process.env.CORRACT_MODE as Mode
 
-  checkRoutes(options.routeConfig)
+  validateRouteConfig(options.routeConfig)
   console.info('Routes registered:', options.routeConfig)
 
   runtimeDistributor({
