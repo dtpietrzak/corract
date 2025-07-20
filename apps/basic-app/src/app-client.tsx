@@ -12,6 +12,7 @@
 
 import type { ClientProps } from 'corract'
 import { render } from 'preact'
+import { useState } from 'preact/hooks'
 import { Router, Route } from 'preact-router'
 import { ServerStateProvider } from 'corract'
 
@@ -19,8 +20,8 @@ import { routes } from './app-def'
 
 import Page_ from './pages/'
 import Page_profile from './pages/profile'
-import Page_profile__id from './pages/profile/(id)'
 import Page_profile_demo from './pages/profile/demo'
+import Page_profile__id from './pages/profile/(id)'
 import Navbar from './layouts/Navbar'
 import Profile from './layouts/Profile'
 
@@ -38,16 +39,19 @@ const pathHandler = <T extends keyof typeof routes>(routePath: T) => {
 }
 
 export function Client(props?: ClientProps) {
-  ssrRoutePath = props?.routePath as string | undefined
+  ssrRoutePath = props?.ssrRoutePath as string | undefined
+  const [currentRoute, setCurrentRoute] = useState<string | undefined>(ssrRoutePath)
+
   return (
     <ServerStateProvider
+      currentRoute={currentRoute}
       middlewareData={props?.middlewareData}
     >
-      <Router>
+      <Router onChange={(e) => setCurrentRoute(e.url)}>
         <Route routes={routes} route={routes['/']} path={pathHandler('/')} component={_Navbar}/>
         <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={_Navbar}/>
-        <Route routes={routes} route={routes['/profile/:id']} path={pathHandler('/profile/:id')} component={_Profile}/>
         <Route routes={routes} route={routes['/profile/demo']} path={pathHandler('/profile/demo')} component={Page_profile_demo}/>
+        <Route routes={routes} route={routes['/profile/:id']} path={pathHandler('/profile/:id')} component={_Profile}/>
       </Router>
     </ServerStateProvider>
   )

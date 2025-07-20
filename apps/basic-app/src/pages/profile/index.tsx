@@ -9,6 +9,11 @@ export const Profile: Page<'/profile', AppRoutes> = (props) => {
       <a href={'/'}>Go to Home</a>
       <br/>
       {`initial route: ${globalMiddleware.initialRoutePath}`}
+      <br/>
+      {`current route: ${globalMiddleware.currentRoutePath}`}
+      <br/>
+      {`call count: ${globalMiddleware.calls}`}
+      <br/>
     </>
   )
 }

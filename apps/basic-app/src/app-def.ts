@@ -11,13 +11,13 @@ export const routes = {
     middleware: [globalMiddleware],
     layouts: [Navbar, ProfileDashboard],
   },
-  '/profile/:id': {
-    middleware: [globalMiddleware],
-    layouts: [ProfileDashboard],
-  },
   '/profile/demo': {
     middleware: [globalMiddleware],
     layouts: [],
+  },
+  '/profile/:id': {
+    middleware: [globalMiddleware],
+    layouts: [ProfileDashboard],
   },
 } as const
 

@@ -36,13 +36,13 @@ export const registerRoutes = (props: {
       return async(req: CorractRequest, res: Response, next: NextFunction) => {
         try {
           // Call the middleware function and get derived data
-          const ssrData = await middleware({
+          const middlewareResult = await middleware({
             req: req,
             res: res,
           })
           // Attach the derived data to the request object
           if (!req.__SSR_DATA__) req.__SSR_DATA__ = {}
-          req.__SSR_DATA__[middleware.name] = ssrData
+          req.__SSR_DATA__[middleware.name] = middlewareResult
           next()
         } catch(error) {
           // Handle any errors from the middleware
@@ -54,22 +54,20 @@ export const registerRoutes = (props: {
 
     // Compose the final handler
     const handler = async(req: CorractRequest, res: Response) => {
+      if (req.header('X-Client-App-Request') === 'true') {
+        // If this is a client app request, just return the SSR data
+        res.json(req.__SSR_DATA__)
+        return
+      }
+
       props.vite.config.logger.info(`Transforming HTML for ${req.url}`)
       const baseHtml = await fs.readFile(path.resolve('index.html'), 'utf-8')
 
-      // compile each index.html entry point for each route
-      // this will be used to serve the initial HTML for each route
-      // and will also be used to build the app entry point
-      // for the client-side routing
-      // ...
-
       const Client = props.options.client
-      // @ts-ignore
       Client.props = {
-        routePath: routePath as keyof RouteConfig,
+        ssrRoutePath: routePath as keyof RouteConfig,
         middlewareData: req.__SSR_DATA__,
       }
-      // @ts-ignore
       const clientHtml = render(Client)
 
       const data = req.__SSR_DATA__ || {}
@@ -230,12 +228,15 @@ export const buildAppClient = async(props: {
 
   const jsx = layoutVariants.map((layoutVariant, i) => {
     if (i === 0) return `export function Client(props?: ClientProps) {
-  ssrRoutePath = props?.routePath as string | undefined
+  ssrRoutePath = props?.ssrRoutePath as string | undefined
+  const [currentRoute, setCurrentRoute] = useState<string | undefined>(ssrRoutePath)
+
   return (
     <ServerStateProvider
+      currentRoute={currentRoute}
       middlewareData={props?.middlewareData}
     >
-      <Router>
+      <Router onChange={(e) => setCurrentRoute(e.url)}>
         ${layoutVariants[0][''].map((layoutVariant) => routeString(layoutVariant.path, layoutVariant.nested, layoutVariant.pageName)).join('\n        ')}
       </Router>
     </ServerStateProvider>
@@ -270,6 +271,7 @@ export const buildAppClient = async(props: {
 
 import type { ClientProps } from 'corract'
 import { render } from 'preact'
+import { useState } from 'preact/hooks'
 import { Router, Route } from 'preact-router'
 import { ServerStateProvider } from 'corract'
 

@@ -4,9 +4,10 @@ import type { JSX } from 'preact'
 import { createContext } from 'preact'
 import { useContext, useEffect, useState } from 'preact/hooks'
 
-type SsrState = 'initializing' | 'complete' | 'error'
-type ServerStateContextType = {
-  [key: string]: unknown;
+type MiddlewareData = Record<string, SuperJsonValue>
+type SsrStatus = 'initializing' | 'complete' | 'error'
+type ServerStateContextType = MiddlewareData & {
+  __SSR_STATUS__: SsrStatus;
 }
 
 const defaultValue: ServerStateContextType = {} as ServerStateContextType
@@ -31,51 +32,77 @@ export const useServerState = <
     return [] as any
   }
 
-  if (typeof window !== 'undefined') {
-    return routeConfig.middleware.map((middleware) => {
-      const middlewareResult = window.__SSR_DATA__?.[middleware.name]
-      return middlewareResult?.data
+  return routeConfig.middleware.map((middleware) => {
+    const middlewareResult = context[middleware.name] as { data: unknown }
+    return middlewareResult?.data
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    }) as any
-  } else { // Server-side rendering
-    if (context.__SSR_STATE__ === 'complete') {
-      return routeConfig.middleware.map((middleware) => {
-        const middlewareResult = context[middleware.name] as { data: unknown }
-        return middlewareResult?.data
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      }) as any
-    } else {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return [] as any
-    }
-  }
+  }) as any
 }
 
 export type ServerStateProviderProps = {
   children: JSX.Element;
-  middlewareData?: Record<string, SuperJsonValue>;
+  currentRoute?: string;
+  middlewareData?: MiddlewareData;
 }
 
+let previousRoute: string | undefined
+
 export const ServerStateProvider = (props: ServerStateProviderProps) => {
-  const initialState: SsrState = props.middlewareData
+  const initialStatus: SsrStatus = props.middlewareData
     ? 'complete'
     : 'initializing'
-  const [ssrState, setSsrState] = useState(initialState)
+  const initialState: MiddlewareData = typeof window !== 'undefined'
+    ? window.__SSR_DATA__ || {}
+    : props.middlewareData || {}
+
+  const [ssrState, setSsrState] = useState<MiddlewareData>(initialState)
+  const [ssrStatus, setSsrStatus] = useState<SsrStatus>(initialStatus)
 
   useEffect(() => {
     document.getElementById('dry-app')?.remove()
-    setSsrState('complete')
+    setSsrStatus('complete')
   }, [])
+
+  useEffect(() => {
+    if (!props.currentRoute) return
+    if (!previousRoute) {
+      previousRoute = props.currentRoute
+      return
+    }
+    // get the current base url of the window to use the path
+    const baseUrl = window.location.origin
+
+    fetch(`${baseUrl}${props.currentRoute}`, {
+      headers: {
+        'X-Client-App-Request': 'true',
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        console.error('Failed to fetch middleware data:', res.statusText)
+        setSsrStatus('error')
+        return
+      }
+      return res.json()
+    })
+      .then((data) => {
+        setSsrState((prev) => ({
+          ...prev,
+          ...data,
+        }))
+      })
+
+    previousRoute = props.currentRoute
+  }, [props.currentRoute])
 
   return (
     <ServerStateContext.Provider
       value={{
-        ...props.middlewareData,
-        __SSR_STATE__: ssrState,
+        ...ssrState,
+        __SSR_STATUS__: ssrStatus,
       }}
     >
       {
-        ssrState === 'complete' &&
+        ssrStatus === 'complete' &&
         props.children
       }
     </ServerStateContext.Provider>

@@ -4,14 +4,13 @@ import type { RouteConfig, SuperJsonValue } from './_types'
 export type Mode = 'dev' | 'build' | 'start'
 
 export type ClientProps<RC extends RouteConfig = RouteConfig> = {
-  routePath?: keyof RC;
+  ssrRoutePath?: keyof RC;
   middlewareData?: Record<string, SuperJsonValue>;
 }
 
 export type StartCorractOptions<RC extends RouteConfig> = {
   routeConfig: RC;
-  // eslint-disable-next-line no-unused-vars
-  client: (props: ClientProps<RC>) => JSX.Element;
+  client: JSX.Element;
 }
 
 export * from './routes/_types'
