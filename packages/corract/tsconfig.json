@@ -1,19 +1,18 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "jsxImportSource": "corract",
     "declaration": true,
-    "moduleResolution": "bundler",
     "outDir": "./dist",
     "rootDir": "src",
     "skipLibCheck": true,
     "baseUrl": "./src",
-    "paths": {
-      "@types/*": [
-        "_types/*"
-      ],
-    }
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
   },
   "include": [
     "./"

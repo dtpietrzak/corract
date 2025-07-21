@@ -25,33 +25,33 @@ import Page_profile__id from './pages/profile/(id)'
 import Navbar from './layouts/Navbar'
 import Profile from './layouts/Profile'
 
-let ssrRoutePath: string | undefined
-const pathHandler = <T extends keyof typeof routes>(routePath: T) => {
-  if (ssrRoutePath) {
-    if (ssrRoutePath === routePath) {
-      return '/' as typeof routePath
+let ssrPagePath: string | undefined
+const pathHandler = <T extends keyof typeof pages>(pagePath: T) => {
+  if (ssrPagePath) {
+    if (ssrPagePath === pagePath) {
+      return '/' as typeof pagePath
     } else {
-      return '/404' as unknown as typeof routePath
+      return '/404' as unknown as typeof pagePath
     }
   } else {
-    return routePath
+    return pagePath
   }
 }
 
 export function Client(props?: ClientProps) {
-  ssrRoutePath = props?.ssrRoutePath as string | undefined
-  const [currentRoute, setCurrentRoute] = useState<string | undefined>(ssrRoutePath)
+  ssrPagePath = props?.ssrPagePath as string | undefined
+  const [currentPath, setCurrentPath] = useState<string | undefined>(ssrPagePath)
 
   return (
     <ServerStateProvider
-      currentRoute={currentRoute}
+      currentPath={currentPath}
       middlewareData={props?.middlewareData}
     >
-      <Router onChange={(e) => setCurrentRoute(e.url)}>
-        <Route routes={routes} route={routes['/']} path={pathHandler('/')} component={_Navbar}/>
-        <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={_Navbar}/>
-        <Route routes={routes} route={routes['/profile/demo']} path={pathHandler('/profile/demo')} component={Page_profile_demo}/>
-        <Route routes={routes} route={routes['/profile/:id']} path={pathHandler('/profile/:id')} component={_Profile}/>
+      <Router onChange={(e) => setCurrentPath(e.url)}>
+        <Route pages={pages} page={pages['/']} path={pathHandler('/')} component={_Navbar}/>
+        <Route pages={pages} page={pages['/profile']} path={pathHandler('/profile')} component={_Navbar}/>
+        <Route pages={pages} page={pages['/profile/demo']} path={pathHandler('/profile/demo')} component={Page_profile_demo}/>
+        <Route pages={pages} page={pages['/profile/:id']} path={pathHandler('/profile/:id')} component={_Profile}/>
       </Router>
     </ServerStateProvider>
   )
@@ -61,8 +61,8 @@ function _Navbar() {
   return (
     <Navbar>
       <Router>
-        <Route routes={routes} route={routes['/']} path={pathHandler('/')} component={Page_}/>
-        <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={_Navbar_Profile}/>
+        <Route pages={pages} page={pages['/']} path={pathHandler('/')} component={Page_}/>
+        <Route pages={pages} page={pages['/profile']} path={pathHandler('/profile')} component={_Navbar_Profile}/>
       </Router>
     </Navbar>
   )
@@ -72,7 +72,7 @@ function _Profile() {
   return (
     <Profile>
       <Router>
-        <Route routes={routes} route={routes['/profile/:id']} path={pathHandler('/profile/:id')} component={Page_profile__id}/>
+        <Route pages={pages} page={pages['/profile/:id']} path={pathHandler('/profile/:id')} component={Page_profile__id}/>
       </Router>
     </Profile>
   )
@@ -82,7 +82,7 @@ function _Navbar_Profile() {
   return (
     <Profile>
       <Router>
-        <Route routes={routes} route={routes['/profile']} path={pathHandler('/profile')} component={Page_profile}/>
+        <Route pages={pages} page={pages['/profile']} path={pathHandler('/profile')} component={Page_profile}/>
       </Router>
     </Profile>
   )

@@ -1,7 +1,7 @@
 import { Page, useServerState } from 'corract'
 
 export const Profile: Page<'/profile', AppPages> = (props) => {
-  const [globalMiddleware] = useServerState(props.route)
+  const [globalMiddleware] = useServerState(props.page)
 
   return (
     <>

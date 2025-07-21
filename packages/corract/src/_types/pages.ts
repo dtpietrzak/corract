@@ -30,8 +30,8 @@ export type PageProps<
   Path extends string & keyof _AppPages,
   _AppPages extends AppPages<Path> = AppPages,
 > = {
-  routes: _AppPages;
-  route: _AppPages[Path];
+  pages: _AppPages;
+  page: _AppPages[Path];
   path: Path;
 }
 

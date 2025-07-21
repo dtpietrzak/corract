@@ -41,7 +41,7 @@ export const useServerState = <
 
 export type ServerStateProviderProps = {
   children: JSX.Element;
-  currentRoute?: string;
+  currentPath?: string;
   middlewareData?: MiddlewareData;
 }
 
@@ -64,15 +64,15 @@ export const ServerStateProvider = (props: ServerStateProviderProps) => {
   }, [])
 
   useEffect(() => {
-    if (!props.currentRoute) return
+    if (!props.currentPath) return
     if (!previousRoute) {
-      previousRoute = props.currentRoute
+      previousRoute = props.currentPath
       return
     }
     // get the current base url of the window to use the path
     const baseUrl = window.location.origin
 
-    fetch(`${baseUrl}${props.currentRoute}`, {
+    fetch(`${baseUrl}${props.currentPath}`, {
       headers: {
         'X-Client-App-Request': 'true',
       },
@@ -91,8 +91,8 @@ export const ServerStateProvider = (props: ServerStateProviderProps) => {
         }))
       })
 
-    previousRoute = props.currentRoute
-  }, [props.currentRoute])
+    previousRoute = props.currentPath
+  }, [props.currentPath])
 
   return (
     <ServerStateContext.Provider

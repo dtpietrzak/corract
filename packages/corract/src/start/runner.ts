@@ -3,7 +3,7 @@
 export type * from 'preact/jsx-runtime'
 
 import type { StartCorractOptions, Mode, PagesConfig } from '../_types'
-import { validatePagesConfig } from '../processes/shared/validatePagesConfig'
+import { validatePagesConfig } from 'processes/shared'
 import { runtimeDistributor } from './tasks/_distributor'
 
 let initialized = false

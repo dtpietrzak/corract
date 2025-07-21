@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 /* eslint-disable no-undef */
 
+import { spawn } from 'child_process'
+
 const args = process.argv.slice(2)
 process.env.CORRACT_MODE = args[0]
-
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { spawn } = require('child_process')
 
 const appEntry = `${process.cwd()}/src/app-start.tsx`
 

@@ -1,7 +1,7 @@
 
 import { Page } from 'corract'
 
-export const MyPage: Page<'/profile/demo'> = (props) => {
+export const MyPage: Page<'/profile/demo', AppPages> = (props) => {
   return (
     <>
       <h1>Demo Page</h1>

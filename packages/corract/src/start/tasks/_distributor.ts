@@ -6,13 +6,13 @@ export const runtimeDistributor = (props: {
   options: StartCorractOptions<PagesConfig>;
 }) => {
   const scriptMap = {
-    dev: 'runtime/dev-server.ts',
-    build: 'runtime/build.ts',
-    start: 'runtime/start-server.ts',
+    dev: 'dev-server.ts',
+    build: 'build.ts',
+    start: 'prod-server.ts',
   }
 
   if (!scriptMap[props.mode]) {
-    console.error(`Unknown command "${props.mode}". Use one of: dev, build, start.`)
+    console.error(`Unknown command "${props.mode}". Use one of: dev, build, prod.`)
     process.exit(1)
   }
 
