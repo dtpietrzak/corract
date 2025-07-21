@@ -1,6 +1,6 @@
 import { Page, useServerState } from 'corract'
 
-export const Profile: Page<'/profile', AppRoutes> = (props) => {
+export const Profile: Page<'/profile', AppPages> = (props) => {
   const [globalMiddleware] = useServerState(props.route)
 
   return (

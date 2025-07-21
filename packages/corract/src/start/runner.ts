@@ -2,30 +2,30 @@
 
 export type * from 'preact/jsx-runtime'
 
-import type { StartCorractOptions, Mode, RouteConfig } from '../_types'
-import { validateRouteConfig } from '../processes/shared/validateRouteConfig'
+import type { StartCorractOptions, Mode, PagesConfig } from '../_types'
+import { validatePagesConfig } from '../processes/shared/validatePagesConfig'
 import { runtimeDistributor } from './tasks/_distributor'
 
 let initialized = false
 
-export const startCorract = <Routes extends RouteConfig>(
-  options: StartCorractOptions<Routes>,
+export const startCorract = <PagesConf extends PagesConfig>(
+  options: StartCorractOptions<PagesConf>,
 ) => {
   if (initialized) {
     console.warn('Corract has already been initialized. Ignoring subsequent calls.')
-    return options.routeConfig
+    return options.pages
   }
   initialized = true
 
   const mode: Mode = process.env.CORRACT_MODE as Mode
 
-  validateRouteConfig(options.routeConfig)
-  console.info('Routes registered:', options.routeConfig)
+  validatePagesConfig(options.pages)
+  console.info('Pages validated:', options.pages)
 
   runtimeDistributor({
     mode: mode,
     options: options,
   })
 
-  return options.routeConfig
+  return options.pages
 }

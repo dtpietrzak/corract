@@ -1,9 +1,9 @@
 import type { JSX } from 'preact'
-import type { RouteConfig } from './routes'
+import type { PagesConfig } from './pages'
 
 export type Mode = 'dev' | 'build' | 'start'
 
-export type StartCorractOptions<RC extends RouteConfig> = {
-  routeConfig: RC;
+export type StartCorractOptions<PagesConf extends PagesConfig> = {
+  pages: PagesConf;
   client: JSX.Element;
 }

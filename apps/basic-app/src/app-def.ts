@@ -2,7 +2,7 @@ import { globalMiddleware } from './middleware/global'
 import Navbar from './layouts/Navbar'
 import ProfileDashboard from './layouts/Profile'
 
-export const routes = {
+export const pages = {
   '/': {
     middleware: [globalMiddleware],
     layouts: [Navbar],
@@ -21,8 +21,12 @@ export const routes = {
   },
 } as const
 
+export const api = {
+  '/api/profile': ['GET', 'POST', 'PATCH', 'DELETE'],
+}
+
 declare global {
-  type AppRoutes = typeof routes
-  type AppPaths = keyof typeof routes
-  type AppMiddleWare<R extends AppPaths> = typeof routes[R]['middleware']
+  type AppPages = typeof pages
+  type AppPaths = keyof typeof pages
+  type AppMiddleWare<R extends AppPaths> = typeof pages[R]['middleware']
 }

@@ -1,9 +1,9 @@
-import type { Mode, RouteConfig, StartCorractOptions } from '_types'
+import type { Mode, PagesConfig, StartCorractOptions } from '_types'
 import { startDev } from './dev-server'
 
 export const runtimeDistributor = (props: {
   mode: Mode;
-  options: StartCorractOptions<RouteConfig>;
+  options: StartCorractOptions<PagesConfig>;
 }) => {
   const scriptMap = {
     dev: 'runtime/dev-server.ts',

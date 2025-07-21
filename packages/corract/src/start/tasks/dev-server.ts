@@ -6,13 +6,13 @@ import express from 'express'
 import {
   buildAppClient,
   buildPages,
-  extendRouteConfig,
+  extendPagesConfig,
   registerRoutes,
 } from '../../routes'
-import type { RouteConfig, StartCorractOptions } from '_types'
+import type { PagesConfig, StartCorractOptions } from '_types'
 
 export async function startDev(props: {
-  options: StartCorractOptions<RouteConfig>;
+  options: StartCorractOptions<PagesConfig>;
 }) {
   const server = express()
 
@@ -36,18 +36,18 @@ export async function startDev(props: {
     options: props.options,
   })
 
-  const extendedRouteConfig = extendRouteConfig(props.options.routeConfig)
+  const extendedPagesConfig = extendPagesConfig(props.options.pages)
 
   if (process.argv.includes('--build')) {
     console.info('Building pages...')
     await buildPages({
-      extendedRouteConfig: extendedRouteConfig,
+      extendedPagesConfig: extendedPagesConfig,
     })
   }
 
   if (process.argv.includes('--build')) {
     await buildAppClient({
-      extendedRouteConfig: extendedRouteConfig,
+      extendedPagesConfig: extendedPagesConfig,
     })
   }
 

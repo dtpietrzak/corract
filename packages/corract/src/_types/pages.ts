@@ -1,19 +1,44 @@
+import type { MiddlewareFunction } from './middleware'
+import type { LayoutComponent } from './layouts'
+import type { SuperJsonValue } from './super-json'
 import type { JSX } from 'preact'
-import type { AppRoutes } from './routes'
+
+export type PageConfig<
+  // eslint-disable-next-line @stylistic/max-len
+  MW extends readonly MiddlewareFunction<SuperJsonValue>[] = readonly MiddlewareFunction<SuperJsonValue>[],
+> = {
+  middleware?: MW;
+  layouts?: readonly LayoutComponent[];
+  meta?: readonly string[];
+  title?: string;
+}
+
+export type PageConfigExtended = PageConfig & {
+  pageName: string;
+  filePath: string;
+}
+export type PagesConfigExtended = Record<string, PageConfigExtended>
+
+export type PagesConfig<
+  Path extends string & keyof PagesConfig = string,
+> = Record<Path, PageConfig>
+
+export type AppPages<Path extends string & keyof AppPages = string> =
+  typeof globalThis extends { AppPages: infer T } ? T : PagesConfig<Path>
 
 export type PageProps<
-  Path extends string & keyof _AppRoutes,
-  _AppRoutes extends AppRoutes<Path> = AppRoutes,
+  Path extends string & keyof _AppPages,
+  _AppPages extends AppPages<Path> = AppPages,
 > = {
-  routes: _AppRoutes;
-  route: _AppRoutes[Path];
+  routes: _AppPages;
+  route: _AppPages[Path];
   path: Path;
 }
 
 export type Page<
-  Path extends string & keyof _AppRoutes,
-  _AppRoutes extends AppRoutes<Path> = AppRoutes,
+  Path extends string & keyof _AppPages,
+  _AppPages extends AppPages<Path> = AppPages,
 > = (
   // eslint-disable-next-line no-unused-vars
-  props: PageProps<Path, _AppRoutes>,
+  props: PageProps<Path, _AppPages>,
 ) => JSX.Element

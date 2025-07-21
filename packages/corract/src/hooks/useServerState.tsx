@@ -1,4 +1,4 @@
-import type { MiddlewareFunction, RouteConfigItem, SuperJsonValue } from '_types'
+import type { MiddlewareFunction, PageConfig, SuperJsonValue } from '_types'
 import type { JSX } from 'preact'
 
 import { createContext } from 'preact'
@@ -18,7 +18,7 @@ export const useServerState = <
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   MW extends readonly MiddlewareFunction<any>[],
 >(
-  routeConfig: RouteConfigItem<MW>,
+  pageConfig: PageConfig<MW>,
 ): {
   [I in keyof MW]: MW[I] extends MiddlewareFunction<infer Data>
     ? Data
@@ -26,13 +26,13 @@ export const useServerState = <
 } => {
   const context = useContext(ServerStateContext)
 
-  if (!routeConfig.middleware || routeConfig.middleware.length === 0) {
+  if (!pageConfig.middleware || pageConfig.middleware.length === 0) {
     console.error('You\'re trying to use `useServerState` without any middleware defined for the route in the route config - app-def.ts')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return [] as any
   }
 
-  return routeConfig.middleware.map((middleware) => {
+  return pageConfig.middleware.map((middleware) => {
     const middlewareResult = context[middleware.name] as { data: unknown }
     return middlewareResult?.data
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

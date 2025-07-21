@@ -1,8 +1,8 @@
 import { startCorract } from 'corract/start'
-import { routes } from './app-def'
+import { pages } from './app-def'
 import { Client } from './app-client'
 
 startCorract({
-  routeConfig: routes,
+  pages: pages,
   client: <Client/>,
 })

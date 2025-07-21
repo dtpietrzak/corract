@@ -16,7 +16,7 @@ import { useState } from 'preact/hooks'
 import { Router, Route } from 'preact-router'
 import { ServerStateProvider } from 'corract'
 
-import { routes } from './app-def'
+import { pages } from './app-def'
 
 import Page_ from './pages/'
 import Page_profile from './pages/profile'

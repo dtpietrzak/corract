@@ -1,6 +1,6 @@
 import type { Express, NextFunction, RequestHandler, Response } from 'express'
 import type { ViteDevServer } from 'vite'
-import type { CorractRequest, RouteConfig, RouteConfigExtended } from '_types'
+import type { CorractRequest, PageConfig, PagesConfig, PagesConfigExtended } from '_types'
 import type { StartCorractOptions } from '../_types'
 
 import fs from 'node:fs/promises'
@@ -10,13 +10,13 @@ import render from 'preact-render-to-string'
 export const registerRoutes = (props: {
   server: Express;
   vite: ViteDevServer;
-  options: StartCorractOptions<RouteConfig>;
+  options: StartCorractOptions<PagesConfig>;
 }): void => {
-  for (const routePath of Object.keys(props.options.routeConfig)) {
-    const routeConfig = props.options.routeConfig[routePath]
+  for (const pagePath of Object.keys(props.options.pages)) {
+    const pageConfig = props.options.pages[pagePath]
 
     // Destructure middleware or use empty array if none
-    const middlewares = routeConfig.middleware || []
+    const middlewares = pageConfig.middleware || []
     const middlewareFunctions: RequestHandler[] = middlewares.map((middleware) => {
       return async(req: CorractRequest, res: Response, next: NextFunction) => {
         try {
@@ -50,7 +50,7 @@ export const registerRoutes = (props: {
 
       const Client = props.options.client
       Client.props = {
-        ssrRoutePath: routePath as keyof RouteConfig,
+        ssrPagePath: pageConfig as keyof PagesConfig,
         middlewareData: req.__SSR_DATA__,
       }
       const clientHtml = render(Client)
@@ -72,14 +72,14 @@ export const registerRoutes = (props: {
     }
 
     // Register route with middleware and handler
-    props.server.get(routePath, ...middlewareFunctions, handler)
+    props.server.get(pagePath, ...middlewareFunctions, handler)
   }
 }
 
-export const extendRouteConfig = (routes: RouteConfig): RouteConfigExtended => {
-  return Object.fromEntries(Object.entries(routes).map(([path, config]) => {
-    console.info(`Processing route: ${path}`)
-    const pathParts = path.split('/')
+export const extendPagesConfig = (pages: PagesConfig): PagesConfigExtended => {
+  return Object.fromEntries(Object.entries(pages).map(([pagePath, config]) => {
+    console.info(`Processing route: ${pagePath}`)
+    const pathParts = pagePath.split('/')
     const forFilePath = pathParts.map((pathPart) => {
       if (pathPart.startsWith(':')) return `(${pathPart.slice(1)})`
       return pathPart
@@ -88,7 +88,7 @@ export const extendRouteConfig = (routes: RouteConfig): RouteConfigExtended => {
       if (pathPart.startsWith(':')) return `_${pathPart.slice(1)}`
       return pathPart
     }).join('_')
-    return [path, {
+    return [pagePath, {
       ...config,
       pageName: `Page${pageName}`,
       filePath: `./pages${forFilePath}`,
@@ -97,10 +97,10 @@ export const extendRouteConfig = (routes: RouteConfig): RouteConfigExtended => {
 }
 
 export const buildPages = async(props: {
-  extendedRouteConfig: RouteConfigExtended;
+  extendedPagesConfig: PagesConfigExtended;
 }) => {
-  await Promise.all(Object.keys(props.extendedRouteConfig).map(async(routePath) => {
-    const pathParts = routePath.split('/')
+  await Promise.all(Object.keys(props.extendedPagesConfig).map(async(pagePath) => {
+    const pathParts = pagePath.split('/')
     const sanitizedPath = pathParts.map((pathPart) => {
       if (pathPart.startsWith(':')) return `(${pathPart.slice(1)})`
       return pathPart
@@ -122,7 +122,7 @@ export const buildPages = async(props: {
     // Create the page template
     const pageTemplate = `import { Page } from 'corract'
 
-export const MyPage: Page<'${routePath}'> = (props) => {
+export const MyPage: Page<'${pagePath}'> = (props) => {
   return (
     <>
       <h1>My Page</h1>
@@ -146,21 +146,21 @@ type LayoutVariants = Record<string, {
 }[]>[]
 
 export const buildAppClient = async(props: {
-  extendedRouteConfig: RouteConfigExtended;
+  extendedPagesConfig: PagesConfigExtended;
 }) => {
   const layoutVariants: LayoutVariants = []
-  Object.entries(props.extendedRouteConfig).forEach(([path, config]) => {
+  Object.entries(props.extendedPagesConfig).forEach(([pagePath, config]) => {
     if (!config.layouts?.length) {
       if (!layoutVariants[0]) layoutVariants[0] = {}
       const currentPaths = layoutVariants[0][''] || []
-      currentPaths.push({ path: path, pageName: config.pageName, nested: '', layoutName: '' })
+      currentPaths.push({ path: pagePath, pageName: config.pageName, nested: '', layoutName: '' })
       layoutVariants[0][''] = currentPaths
       return
     } else {
       if (!layoutVariants[0]) layoutVariants[0] = {}
       const currentPaths = layoutVariants[0][''] || []
       currentPaths.push({
-        path: path,
+        path: pagePath,
         pageName: config.pageName,
         layoutName: config.layouts[0].name,
         nested: config.layouts[0].name,
@@ -181,7 +181,7 @@ export const buildAppClient = async(props: {
       }
       const currentPaths = layoutVariants[i + 1][currentLayout] || []
       currentPaths.push({
-        path: path,
+        path: pagePath,
         pageName: config.pageName,
         layoutName: config.layouts[i].name,
         nested: nested,
@@ -191,7 +191,7 @@ export const buildAppClient = async(props: {
   })
   // an array of all the indiviudal layout components, unique array with no duplicates
   const layouts = Array.from(new Set(Object
-    .values(props.extendedRouteConfig)
+    .values(props.extendedPagesConfig)
     .flatMap((config) => config.layouts || [])
     .map((layout) => layout.name))).map((name) => {
     return {
@@ -201,7 +201,7 @@ export const buildAppClient = async(props: {
   })
 
   const pageImports = Object
-    .values(props.extendedRouteConfig)
+    .values(props.extendedPagesConfig)
     .map((config) => `import ${config.pageName} from '${config.filePath}'`)
     .join('\n')
 
@@ -209,12 +209,12 @@ export const buildAppClient = async(props: {
     .map((layout) => `import ${layout.name} from '${layout.filePath}'`)
     .join('\n')
 
-  const routeString = (path: string, nested: string, pageName: string) => `<Route routes={routes} route={routes['${path}']} path={pathHandler('${path}')} component={${nested ? `_${nested}` : pageName}}/>`
+  const routeString = (path: string, nested: string, pageName: string) => `<Route pages={pages} page={pages['${path}']} path={pathHandler('${path}')} component={${nested ? `_${nested}` : pageName}}/>`
 
   const jsx = layoutVariants.map((layoutVariant, i) => {
     if (i === 0) return `export function Client(props?: ClientProps) {
-  ssrRoutePath = props?.ssrRoutePath as string | undefined
-  const [currentRoute, setCurrentRoute] = useState<string | undefined>(ssrRoutePath)
+  ssrPagePath = props?.ssrPagePath as string | undefined
+  const [currentRoute, setCurrentRoute] = useState<string | undefined>(ssrPagePath)
 
   return (
     <ServerStateProvider
@@ -260,21 +260,21 @@ import { useState } from 'preact/hooks'
 import { Router, Route } from 'preact-router'
 import { ServerStateProvider } from 'corract'
 
-import { routes } from './app-def'
+import { pages } from './app-def'
 
 ${pageImports}
 ${layoutImports}
 
-let ssrRoutePath: string | undefined
-const pathHandler = <T extends keyof typeof routes>(routePath: T) => {
-  if (ssrRoutePath) {
-    if (ssrRoutePath === routePath) {
-      return '/' as typeof routePath
+let ssrPagePath: string | undefined
+const pathHandler = <T extends keyof typeof pages>(pagePath: T) => {
+  if (ssrPagePath) {
+    if (ssrPagePath === pagePath) {
+      return '/' as typeof pagePath
     } else {
-      return '/404' as unknown as typeof routePath
+      return '/404' as unknown as typeof pagePath
     }
   } else {
-    return routePath
+    return pagePath
   }
 }
 
