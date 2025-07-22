@@ -1,4 +1,5 @@
 import { type LayoutProps } from 'corract'
+import { Link } from 'components'
 
 const Navbar = (props: LayoutProps) => {
   return (
@@ -6,14 +7,19 @@ const Navbar = (props: LayoutProps) => {
       <nav className={'bg-gray-50 dark:bg-gray-950 p-2 shadow-md'}>
         <ul className={'flex flex-row gap-4'}>
           <li>
-            <a href={'/'}>Home</a>
+            <Link
+              href={'/'}
+              className={'text-gray-800 dark:text-gray-200'}
+            >
+              Home
+            </Link>
           </li>
           <li>
-            <a href={'/profile'}>Profile</a>
+            <Link href={'/profile'}>Profile</Link>
           </li>
         </ul>
       </nav>
-      <div>
+      <div className={'bg-gray-100 dark:bg-gray-900 p-4'}>
         {props.children}
       </div>
     </>

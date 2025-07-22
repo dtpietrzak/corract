@@ -19,6 +19,10 @@ export const pages = {
     middleware: [globalMiddleware],
     layouts: [ProfileDashboard],
   },
+  '/tasks': {
+    middleware: [],
+    layouts: [Navbar],
+  },
 } as const
 
 export const api = {

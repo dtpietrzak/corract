@@ -22,6 +22,7 @@ import Page_ from './pages/'
 import Page_profile from './pages/profile'
 import Page_profile_demo from './pages/profile/demo'
 import Page_profile__id from './pages/profile/(id)'
+import Page_tasks from './pages/tasks'
 import Navbar from './layouts/Navbar'
 import Profile from './layouts/Profile'
 
@@ -52,6 +53,7 @@ export function Client(props?: ClientProps) {
         <Route pages={pages} page={pages['/profile']} path={pathHandler('/profile')} component={_Navbar}/>
         <Route pages={pages} page={pages['/profile/demo']} path={pathHandler('/profile/demo')} component={Page_profile_demo}/>
         <Route pages={pages} page={pages['/profile/:id']} path={pathHandler('/profile/:id')} component={_Profile}/>
+        <Route pages={pages} page={pages['/tasks']} path={pathHandler('/tasks')} component={_Navbar}/>
       </Router>
     </ServerStateProvider>
   )
@@ -63,6 +65,7 @@ function _Navbar() {
       <Router>
         <Route pages={pages} page={pages['/']} path={pathHandler('/')} component={Page_}/>
         <Route pages={pages} page={pages['/profile']} path={pathHandler('/profile')} component={_Navbar_Profile}/>
+        <Route pages={pages} page={pages['/tasks']} path={pathHandler('/tasks')} component={Page_tasks}/>
       </Router>
     </Navbar>
   )
