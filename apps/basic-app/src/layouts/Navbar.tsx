@@ -1,19 +1,39 @@
 import { type LayoutProps } from 'corract'
-import { FlexCol, Link } from 'src/components'
+import { MiniLogo } from 'src/assets'
+import { FlexCol, Link, TextInput } from 'src/components'
+
 
 const Navbar = (props: LayoutProps) => {
   return (
     <FlexCol className={'min-h-screen'}>
-      <nav className={'bg-gray-50 dark:bg-gray-950 p-2 shadow-md'}>
-        <ul className={'flex flex-row gap-4'}>
+      <nav className={'bg-gray-50 dark:bg-gray-950 px-4 py-2 shadow-md border-b border-black/10 dark:border-white/20'}>
+        <ul className={'flex flex-row justify-between items-center gap-4'}>
           <li>
             <Link href={'/'} color={'black.hard'}>
-              Home
+              <MiniLogo/>
             </Link>
+          </li>
+          {/* search bar that flexes as wide as it can */}
+          <li className={'flex-1'}>
+            <TextInput
+              color={'black.hard'}
+              placeholder={'Search...'}
+              className={'w-full'}
+            />
           </li>
           <li>
             <Link href={'/docs'} color={'black.hard'}>
               Docs
+            </Link>
+          </li>
+          <li>
+            <Link href={'/docs'} color={'black.hard'}>
+              Blog
+            </Link>
+          </li>
+          <li>
+            <Link href={'/docs'} color={'black.hard'}>
+              Github
             </Link>
           </li>
         </ul>

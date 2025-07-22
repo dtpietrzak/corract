@@ -29,5 +29,10 @@ export const colors = {
     'gold.hard': 'text-yellow-500/85 dark:text-yellow-500/85',
     'gold.soft': 'text-yellow-500/55 dark:text-yellow-500/55',
   },
+  search: {
+    'black.hard': 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-black dark:text-white',
+    'black.soft': 'bg-black/5 dark:bg-white/5 border-gray-300/80 dark:border-gray-700/80 text-black/80 dark:text-white/80',
+    'black.faint': 'bg-transparent dark:bg-transparent border-gray-300/50 dark:border-gray-700/50 text-black/50 dark:text-white/50',
+  },
 }
 
