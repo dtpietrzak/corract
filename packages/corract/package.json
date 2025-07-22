@@ -15,9 +15,9 @@
       "types": "./dist/jsx/jsx-runtime.d.ts"
     },
     "./jsx-dev-runtime": {
-      "import": "./dist/jsx/jsx-runtime.js",
-      "default": "./dist/jsx/jsx-runtime.js",
-      "types": "./dist/jsx/jsx-runtime.d.ts"
+      "import": "./dist/jsx/jsx-dev-runtime.js",
+      "default": "./dist/jsx/jsx-dev-runtime.js",
+      "types": "./dist/jsx/jsx-dev-runtime.d.ts"
     },
     ".": {
       "import": "./dist/index.js",
@@ -31,7 +31,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "rollup --config",
     "dev": "tsx ./dist/index.js"
   },
   "dependencies": {
@@ -43,10 +43,15 @@
     "vite": "^7.0.2"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.4",
     "@types/express": "^5.0.3",
     "@types/node": "^24.0.10",
     "esbuild": "^0.25.5",
     "esbuild-register": "^3.6.0",
-    "preact": "^10.26.9"
+    "preact": "^10.26.9",
+    "rollup": "^4.45.1",
+    "tslib": "^2.8.1"
   }
 }

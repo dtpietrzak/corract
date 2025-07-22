@@ -1,6 +1,7 @@
 import { globalMiddleware } from './middleware/global'
 import Navbar from './layouts/Navbar'
-import ProfileDashboard from './layouts/Profile'
+import Profile from './layouts/Profile'
+import Docs from './layouts/Docs'
 
 export const pages = {
   '/': {
@@ -9,7 +10,7 @@ export const pages = {
   },
   '/profile': {
     middleware: [globalMiddleware],
-    layouts: [Navbar, ProfileDashboard],
+    layouts: [Navbar, Profile],
   },
   '/profile/demo': {
     middleware: [globalMiddleware],
@@ -17,11 +18,15 @@ export const pages = {
   },
   '/profile/:id': {
     middleware: [globalMiddleware],
-    layouts: [ProfileDashboard],
+    layouts: [Profile],
   },
   '/tasks': {
-    middleware: [],
+    middleware: [globalMiddleware],
     layouts: [Navbar],
+  },
+  '/docs': {
+    middleware: [globalMiddleware],
+    layouts: [Navbar, Docs],
   },
 } as const
 

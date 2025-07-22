@@ -28,7 +28,7 @@ export const buildPages = async(props: {
     // Create the page template
     const pageTemplate = `import { Page } from 'corract'
 
-export const MyPage: Page<'${pagePath}', AppPages> = (props) => {
+const MyPage: Page<'${pagePath}', AppPages> = (props) => {
   return (
     <>
       <h1>My Page</h1>

@@ -155,6 +155,7 @@ export default [
 
 
       'react/prop-types': 'off',
+      'react/no-unescaped-entities': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
     },
     ignores: [
