@@ -1,7 +1,0 @@
-@import "tailwindcss";
-* {
-  @apply appearance-none outline-none;
-}
-*:focus {
-  @apply appearance-none outline-none;
-}

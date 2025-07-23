@@ -1,0 +1,7 @@
+@import "tailwindcss";
+* {
+  @apply appearance-none outline-none tracking-wide;
+}
+*:focus {
+  @apply appearance-none outline-none;
+}
