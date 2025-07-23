@@ -47,5 +47,5 @@ export async function startDev(props: {
   }
 
   server.listen(props.options.port)
-  console.info('Corract dev server running at http://localhost:3000')
+  console.info(`Corract dev server running at http://localhost:${props.options.port}`)
 }
