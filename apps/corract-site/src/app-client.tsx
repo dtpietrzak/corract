@@ -41,6 +41,7 @@ import Page_docs_tools_components from './pages/docs/tools/components'
 import Page_docs_third__d__party_preact from './pages/docs/third-party/preact'
 import Page_docs_third__d__party_express from './pages/docs/third-party/express'
 import Page_docs_third__d__party_vite from './pages/docs/third-party/vite'
+import Page_docs_third__d__party_tailwind from './pages/docs/third-party/tailwind'
 import Page_docs_third__d__party_typescript from './pages/docs/third-party/typescript'
 import Page_docs_third__d__party_eslint from './pages/docs/third-party/eslint'
 import Layout_Navbar from './layouts/Navbar'
@@ -91,6 +92,7 @@ export function Client(props?: ClientProps) {
         <Route pages={pages} page={pages['/docs/third-party/preact']} path={pathHandler('/docs/third-party/preact')} component={_Navbar}/>
         <Route pages={pages} page={pages['/docs/third-party/express']} path={pathHandler('/docs/third-party/express')} component={_Navbar}/>
         <Route pages={pages} page={pages['/docs/third-party/vite']} path={pathHandler('/docs/third-party/vite')} component={_Navbar}/>
+        <Route pages={pages} page={pages['/docs/third-party/tailwind']} path={pathHandler('/docs/third-party/tailwind')} component={_Navbar}/>
         <Route pages={pages} page={pages['/docs/third-party/typescript']} path={pathHandler('/docs/third-party/typescript')} component={_Navbar}/>
         <Route pages={pages} page={pages['/docs/third-party/eslint']} path={pathHandler('/docs/third-party/eslint')} component={_Navbar}/>
       </Router>
@@ -121,6 +123,7 @@ function _Navbar() {
         <Route pages={pages} page={pages['/docs/third-party/preact']} path={pathHandler('/docs/third-party/preact')} component={_Navbar_Docs}/>
         <Route pages={pages} page={pages['/docs/third-party/express']} path={pathHandler('/docs/third-party/express')} component={_Navbar_Docs}/>
         <Route pages={pages} page={pages['/docs/third-party/vite']} path={pathHandler('/docs/third-party/vite')} component={_Navbar_Docs}/>
+        <Route pages={pages} page={pages['/docs/third-party/tailwind']} path={pathHandler('/docs/third-party/tailwind')} component={_Navbar_Docs}/>
         <Route pages={pages} page={pages['/docs/third-party/typescript']} path={pathHandler('/docs/third-party/typescript')} component={_Navbar_Docs}/>
         <Route pages={pages} page={pages['/docs/third-party/eslint']} path={pathHandler('/docs/third-party/eslint')} component={_Navbar_Docs}/>
       </Router>
@@ -168,6 +171,7 @@ function _Navbar_Docs() {
         <Route pages={pages} page={pages['/docs/third-party/preact']} path={pathHandler('/docs/third-party/preact')} component={Page_docs_third__d__party_preact}/>
         <Route pages={pages} page={pages['/docs/third-party/express']} path={pathHandler('/docs/third-party/express')} component={Page_docs_third__d__party_express}/>
         <Route pages={pages} page={pages['/docs/third-party/vite']} path={pathHandler('/docs/third-party/vite')} component={Page_docs_third__d__party_vite}/>
+        <Route pages={pages} page={pages['/docs/third-party/tailwind']} path={pathHandler('/docs/third-party/tailwind')} component={Page_docs_third__d__party_tailwind}/>
         <Route pages={pages} page={pages['/docs/third-party/typescript']} path={pathHandler('/docs/third-party/typescript')} component={Page_docs_third__d__party_typescript}/>
         <Route pages={pages} page={pages['/docs/third-party/eslint']} path={pathHandler('/docs/third-party/eslint')} component={Page_docs_third__d__party_eslint}/>
       </Router>

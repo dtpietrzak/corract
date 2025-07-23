@@ -5,3 +5,6 @@
 *:focus {
   @apply appearance-none outline-none;
 }
+.inline-code {
+  @apply bg-gray-500/20 rounded-2xl py-0.5 px-2;
+}

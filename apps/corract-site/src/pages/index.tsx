@@ -5,7 +5,7 @@ import { Text, FlexCol, Link } from 'src/components'
 export const Home: Page<'/', AppPages> = (props) => {
   return (
     <FlexCol className={'flex-1 items-center justify-center p-2'}>
-      <Text tag={'h1'} color={'black.hard'} className={'font-black text-5xl'}>
+      <Text tag={'h1'} color={'black.soft'} className={'font-black text-5xl text-shadow-lg'}>
         Welcome to Corract!
       </Text>
       <Text tag={'p'} color={'gold.hard'} className={'font-bold'}>

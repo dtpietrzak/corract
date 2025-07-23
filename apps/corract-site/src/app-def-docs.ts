@@ -29,6 +29,7 @@ export const appDefDocs = {
   '/docs/third-party/preact': docsPageConfig,
   '/docs/third-party/express': docsPageConfig,
   '/docs/third-party/vite': docsPageConfig,
+  '/docs/third-party/tailwind': docsPageConfig,
   '/docs/third-party/typescript': docsPageConfig,
   '/docs/third-party/eslint': docsPageConfig,
 }

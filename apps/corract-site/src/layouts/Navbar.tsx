@@ -5,7 +5,7 @@ import { FlexCol, Link, TextInput, Text } from 'src/components'
 
 const Navbar = (props: LayoutProps) => {
   return (
-    <FlexCol className={'min-h-screen'}>
+    <FlexCol className={'h-screen'}>
       <nav className={'bg-gray-50 dark:bg-gray-950 px-4 py-2 shadow-md border-b border-black/10 dark:border-white/20'}>
         <ul className={'flex flex-row justify-between items-center gap-3'}>
           <ul className={'flex flex-row items-center gap-2'}>
@@ -51,7 +51,7 @@ const Navbar = (props: LayoutProps) => {
           </ul>
         </ul>
       </nav>
-      <div className={'flex-1 flex flex-col bg-gray-100 dark:bg-gray-900'}>
+      <div className={'flex-1 flex flex-col bg-gray-100 dark:bg-gray-900 overflow-hidden'}>
         {props.children}
       </div>
     </FlexCol>

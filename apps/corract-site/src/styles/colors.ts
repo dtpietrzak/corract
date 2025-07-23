@@ -4,27 +4,27 @@ export const colors = {
     'black.soft': 'text-black/70 dark:text-white/70',
     'black.faint': 'text-black/40 dark:text-white/40',
 
-    'green.hard': 'text-green-500 dark:text-green-500',
-    'green.soft': 'text-green-500/70 dark:text-green-500/70',
-    'green.faint': 'text-green-500/40 dark:text-green-500/40',
+    'green.hard': 'text-green-600 dark:text-green-500',
+    'green.soft': 'text-green-700/70 dark:text-green-500/80',
+    'green.faint': 'text-green-600/60 dark:text-green-400/45',
 
-    'purple.hard': 'text-purple-500 dark:text-purple-500',
-    'purple.soft': 'text-purple-500/70 dark:text-purple-500/70',
-    'purple.faint': 'text-purple-500/40 dark:text-purple-500/40',
+    'purple.hard': 'text-purple-500/90 dark:text-purple-400',
+    'purple.soft': 'text-purple-700/70 dark:text-purple-400/80',
+    'purple.faint': 'text-purple-600/35 dark:text-purple-400/50',
 
-    'gold.hard': 'text-yellow-500 dark:text-yellow-500',
-    'gold.soft': 'text-yellow-500/70 dark:text-yellow-500/70',
-    'gold.faint': 'text-yellow-500/40 dark:text-yellow-500/40',
+    'gold.hard': 'text-yellow-600 dark:text-yellow-400/90',
+    'gold.soft': 'text-yellow-700/70 dark:text-yellow-400/70',
+    'gold.faint': 'text-yellow-600/60 dark:text-yellow-300/40',
   },
   link: {
     'black.hard': 'text-black/85 dark:text-white/85',
     'black.soft': 'text-black/55 dark:text-white/55',
 
-    'green.hard': 'text-green-500/85 dark:text-green-500/85',
-    'green.soft': 'text-green-500/55 dark:text-green-500/55',
+    'green.hard': 'text-green-600/85 dark:text-green-500/85',
+    'green.soft': 'text-green-700/55 dark:text-green-500/55',
 
-    'purple.hard': 'text-purple-500/85 dark:text-purple-500/85',
-    'purple.soft': 'text-purple-500/55 dark:text-purple-500/55',
+    'purple.hard': 'text-purple-500/85 dark:text-purple-400/85',
+    'purple.soft': 'text-purple-500/55 dark:text-purple-400/55',
 
     'gold.hard': 'text-yellow-500/85 dark:text-yellow-500/85',
     'gold.soft': 'text-yellow-500/55 dark:text-yellow-500/55',
