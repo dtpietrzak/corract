@@ -70,7 +70,7 @@ export const buildAppClient = async(props: {
     .join('\n')
 
   const layoutImports = layouts
-    .map((layout) => `import ${layout.name} from '${layout.filePath}'`)
+    .map((layout) => `import Layout_${layout.name} from '${layout.filePath}'`)
     .join('\n')
 
   const routeString = (path: string, nested: string, pageName: string) => `<Route pages={pages} page={pages['${path}']} path={pathHandler('${path}')} component={${nested ? `_${nested}` : pageName}}/>`
@@ -94,11 +94,11 @@ export const buildAppClient = async(props: {
 
     return `${Object.entries(layoutVariant).map(([currentLayout, layoutConfig]) => `function _${currentLayout}() {
   return (
-    <${layoutConfig[0].layoutName}>
+    <Layout_${layoutConfig[0].layoutName}>
       <Router>
         ${layoutConfig.map((layoutConfigItem) => routeString(layoutConfigItem.path, layoutConfigItem.nested, layoutConfigItem.pageName)).join('\n        ')}
       </Router>
-    </${layoutConfig[0].layoutName}>
+    </Layout_${layoutConfig[0].layoutName}>
   )
 }`)
       .join('\n\n')}`
@@ -117,6 +117,8 @@ export const buildAppClient = async(props: {
  * The current plan is to allow drivers to be set up to use this framework
  * with different ui libraries, routing libraries, state management, etc.
  */
+/* eslint-disable @stylistic/jsx-pascal-case */
+
 
 import type { ClientProps } from 'corract'
 import { render } from 'preact'
