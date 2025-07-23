@@ -9,7 +9,8 @@ export const extendPagesConfig = (pages: PagesConfig): PagesConfigExtended => {
       return pathPart
     }).join('/')
     const pageName = pathParts.map((pathPart) => {
-      if (pathPart.startsWith(':')) return `_${pathPart.slice(1)}`
+      if (pathPart.startsWith(':')) return `__x__${pathPart.slice(1)}`
+      pathPart.replace(/-/g, '__d__')
       return pathPart
     }).join('_')
     return [pagePath, {

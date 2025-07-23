@@ -8,7 +8,7 @@ export const buildPages = async(props: {
   await Promise.all(Object.keys(props.extendedPagesConfig).map(async(pagePath) => {
     const pathParts = pagePath.split('/')
     const sanitizedPath = pathParts.map((pathPart) => {
-      if (pathPart.startsWith(':')) return `(${pathPart.slice(1)})`
+      if (pathPart.startsWith(':')) return `[${pathPart.slice(1)}]`
       return pathPart
     }).join('/')
     // check if file already exists
