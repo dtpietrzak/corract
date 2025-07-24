@@ -5,5 +5,5 @@ import { Client } from './app-client'
 startCorract({
   pages: pages,
   client: <Client/>,
-  port: 7000,
+  port: 3000,
 })
