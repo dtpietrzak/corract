@@ -1,4 +1,4 @@
-import type { PagesConfig } from '_types'
+import type { PagesConfig } from 'src/types'
 import isObject from 'isobject'
 
 export const validatePagesConfig = (pagesConfig: PagesConfig): boolean => {

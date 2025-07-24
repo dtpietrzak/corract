@@ -1,5 +1,6 @@
-import type { Mode, PagesConfig, StartCorractOptions } from '_types'
+import type { Mode, PagesConfig, StartCorractOptions } from 'src/types'
 import { startDev } from './dev-server'
+import { startBuild } from './build'
 
 export const runtimeDistributor = (props: {
   mode: Mode;
@@ -19,6 +20,11 @@ export const runtimeDistributor = (props: {
   switch (props.mode) {
     case 'dev':
       startDev({
+        options: props.options,
+      })
+      break
+    case 'build':
+      startBuild({
         options: props.options,
       })
       break

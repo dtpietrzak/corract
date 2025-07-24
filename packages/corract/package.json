@@ -31,7 +31,7 @@
     }
   },
   "scripts": {
-    "build": "rollup --config",
+    "build": "rollup --config && tsc-alias",
     "dev": "tsx ./dist/index.js"
   },
   "dependencies": {
@@ -43,6 +43,7 @@
     "vite": "^7.0.2"
   },
   "devDependencies": {
+    "@rollup/plugin-alias": "^5.1.1",
     "@rollup/plugin-commonjs": "^28.0.6",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
@@ -52,6 +53,8 @@
     "esbuild-register": "^3.6.0",
     "preact": "^10.26.9",
     "rollup": "^4.45.1",
+    "rollup-plugin-dts": "^6.2.1",
+    "tsc-alias": "^1.8.16",
     "tslib": "^2.8.1"
   }
 }

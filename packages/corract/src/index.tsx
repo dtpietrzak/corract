@@ -1,8 +1,8 @@
 export * from './hooks'
-export * from './_types'
+export * from './types'
 
 import type { Response, NextFunction } from 'express'
-import type { MiddlewareFunction, CorractRequest } from './_types'
+import type { MiddlewareFunction, CorractRequest } from './types'
 
 export const middlewareHandler = async(
   req: CorractRequest,

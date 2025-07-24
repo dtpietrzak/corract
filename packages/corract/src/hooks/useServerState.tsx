@@ -1,4 +1,4 @@
-import type { MiddlewareFunction, PageConfig, SuperJsonValue } from '_types'
+import type { MiddlewareFunction, PageConfig, SuperJsonValue } from 'src/types'
 import type { JSX } from 'preact'
 
 import { createContext } from 'preact'

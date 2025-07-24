@@ -1,4 +1,4 @@
-import type { PagesConfig, PagesConfigExtended } from '_types'
+import type { PagesConfig, PagesConfigExtended } from 'src/types'
 
 export const extendPagesConfig = (pages: PagesConfig): PagesConfigExtended => {
   return Object.fromEntries(Object.entries(pages).map(([pagePath, config]) => {

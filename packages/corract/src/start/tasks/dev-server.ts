@@ -1,10 +1,11 @@
 import 'esbuild-register/dist/node'
-import type { PagesConfig, StartCorractOptions } from '_types'
+import type { PagesConfig, StartCorractOptions } from 'src/types'
 
 import { createServer } from 'vite'
 import express from 'express'
 
-import { registerPagesToExpress, extendPagesConfig, buildPages, buildAppClient } from 'processes/shared'
+import { extendPagesConfig, buildPages, buildAppClient } from 'src/processes/shared'
+import { registerPagesToExpress } from 'src/processes/dev'
 
 export async function startDev(props: {
   options: StartCorractOptions<PagesConfig>;
@@ -25,7 +26,7 @@ export async function startDev(props: {
 
   console.info('Using Vite config at:', vite.config.configFile, '\n')
 
-  registerPagesToExpress({
+  await registerPagesToExpress({
     server: server,
     vite: vite,
     options: props.options,

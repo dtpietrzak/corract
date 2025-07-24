@@ -1,4 +1,4 @@
-import type { PagesConfigExtended } from '_types'
+import type { PagesConfigExtended } from 'src/types'
 
 import fs from 'node:fs/promises'
 

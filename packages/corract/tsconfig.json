@@ -10,12 +10,17 @@
     "outDir": "./dist",
     "rootDir": "src",
     "skipLibCheck": true,
-    "baseUrl": "./src",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
+    "baseUrl": "./",
+    "paths": {
+      "src/*": [
+        "src/*"
+      ]
+    }
   },
   "include": [
-    "./"
+    "src"
   ],
   "exclude": [
     "./dist"

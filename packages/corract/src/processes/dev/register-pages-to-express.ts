@@ -1,17 +1,16 @@
 import type { Express, NextFunction, RequestHandler, Response } from 'express'
 import type { ViteDevServer } from 'vite'
-import type { CorractRequest, PagesConfig } from '_types'
-import type { StartCorractOptions } from '_types'
+import type { CorractRequest, PagesConfig, StartCorractOptions } from 'src/types'
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import render from 'preact-render-to-string'
 
-export const registerPagesToExpress = (props: {
+export const registerPagesToExpress = async(props: {
   server: Express;
   vite: ViteDevServer;
   options: StartCorractOptions<PagesConfig>;
-}): void => {
+}): Promise<void> => {
   for (const pagePath of Object.keys(props.options.pages)) {
     const pageConfig = props.options.pages[pagePath]
 
