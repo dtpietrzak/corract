@@ -5,7 +5,7 @@ import Docs from './layouts/Docs'
 const docsPageConfig = {
   middleware: [globalMiddleware],
   layouts: [Navbar, Docs],
-}
+} as const
 
 export const appDefDocs = {
   // overview
@@ -32,4 +32,4 @@ export const appDefDocs = {
   '/docs/third-party/tailwind': docsPageConfig,
   '/docs/third-party/typescript': docsPageConfig,
   '/docs/third-party/eslint': docsPageConfig,
-}
+} as const

@@ -10,7 +10,17 @@ const input = {
 }
 
 const shared = {
-  plugins: [typescript(), commonjs(), nodeResolve()],
+  plugins: [
+    typescript(),
+    commonjs({
+      ignoreDynamicRequires: true,
+      transformMixedEsModules: true,
+    }),
+    nodeResolve({
+      preferBuiltins: true,
+      exportConditions: ['node'],
+    }),
+  ],
   input: input,
 }
 
@@ -22,7 +32,7 @@ export default [
       format: 'esm',
       entryFileNames: '[name].js',
     },
-    external: ['preact', 'preact/hooks', 'node:fs/promises', 'preact-render-to-string', 'vite', 'express'],
+    external: ['preact', 'preact/hooks', 'node:fs/promises', 'preact-render-to-string', 'vite', 'express', 'typescript', 'ts-morph'],
   },
   // {
   //   ...shared,

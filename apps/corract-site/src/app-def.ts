@@ -5,7 +5,7 @@ import { appDefDocs } from './app-def-docs'
 
 export const pages = {
   '/': {
-    middleware: [globalMiddleware],
+    middleware: [globalMiddleware, globalMiddleware],
     layouts: [Navbar],
   },
   '/profile': {
@@ -21,7 +21,7 @@ export const pages = {
     layouts: [Profile],
   },
   '/tasks': {
-    middleware: [globalMiddleware],
+    middleware: [],
     layouts: [Navbar],
   },
   ...appDefDocs,
