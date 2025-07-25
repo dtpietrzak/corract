@@ -1,6 +1,6 @@
 import { Page } from 'corract'
 import { Logo } from 'src/assets/Logo'
-import { Text, FlexCol, Link } from 'src/components'
+import { Text, FlexCol } from 'src/components'
 
 export const Home: Page<'/', AppPages> = (props) => {
   return (
@@ -14,9 +14,6 @@ export const Home: Page<'/', AppPages> = (props) => {
       <div className={'motion-safe:animate-bounce'}>
         <Logo/>
       </div>
-      <Link href={'/profile'} color={'gold.hard'}>Go to Profile Editor</Link>
-      <Link href={'/profile/demo'} color={'green.hard'}>Go to Demo Profile</Link>
-      <Link href={'/profile/john'} color={'purple.hard'}>Go to John's Profile</Link>
     </FlexCol>
   )
 }

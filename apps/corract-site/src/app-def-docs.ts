@@ -1,9 +1,9 @@
-import { globalMiddleware } from './middleware/global'
+import { docsMiddleware } from './middleware/docs'
 import Navbar from './layouts/Navbar'
 import Docs from './layouts/Docs'
 
 const docsPageConfig = {
-  middleware: [globalMiddleware],
+  middleware: [docsMiddleware],
   layouts: [Navbar, Docs],
 } as const
 

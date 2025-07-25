@@ -5,6 +5,7 @@ import { Header } from 'src/pages/docs/_components'
 import { colors } from 'src/styles'
 
 const Docs: Page<'/docs', AppPages> = (props) => {
+
   return (
     <>
       <Header>
@@ -44,7 +45,7 @@ const Docs: Page<'/docs', AppPages> = (props) => {
         </Text>
       </div>
       <Text tag={'p'} color={'gold.faint'} className={'text-sm'}>
-        NOTE: <i>Corract is still in early development, so expect some rough edges and missing features. But it’s already a solid foundation for building Preact apps with SSR.</i>
+        NOTE: <i>Corract is still in early development, so expect some rough edges and missing features.</i>
       </Text>
     </>
   )

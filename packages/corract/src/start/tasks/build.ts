@@ -11,11 +11,11 @@ export async function startBuild(props: {
 }) {
   const extendedPagesConfig = extendPagesConfig(props.options.pages)
 
-  await buildPages({
+  await buildAppClient({
     extendedPagesConfig: extendedPagesConfig,
   })
 
-  await buildAppClient({
+  await buildPages({
     extendedPagesConfig: extendedPagesConfig,
   })
 

@@ -1,26 +1,9 @@
-import { globalMiddleware } from './middleware/global'
 import Navbar from './layouts/Navbar'
-import Profile from './layouts/Profile'
+// import Profile from './layouts/Profile'
 import { appDefDocs } from './app-def-docs'
 
 export const pages = {
   '/': {
-    middleware: [globalMiddleware, globalMiddleware],
-    layouts: [Navbar],
-  },
-  '/profile': {
-    middleware: [globalMiddleware],
-    layouts: [Navbar, Profile],
-  },
-  '/profile/demo': {
-    middleware: [globalMiddleware],
-    layouts: [],
-  },
-  '/profile/:id': {
-    middleware: [globalMiddleware],
-    layouts: [Profile],
-  },
-  '/tasks': {
     middleware: [],
     layouts: [Navbar],
   },
