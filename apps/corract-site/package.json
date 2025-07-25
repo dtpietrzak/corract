@@ -17,6 +17,6 @@
     "dev": "corract-cli dev",
     "build-dev": "corract-cli dev --build",
     "build": "corract-cli build",
-    "prod": "PORT=7000 corract-cli prod"
+    "prod": "corract-cli prod"
   }
 }

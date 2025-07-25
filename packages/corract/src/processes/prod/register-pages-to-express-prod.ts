@@ -45,7 +45,7 @@ export const registerPagesToExpressProd = async(props: {
       const pageHtml = await fs.readFile(path.resolve(
         '.dist',
         'static-html',
-        `${pagePath !== '/' ? pagePath : 'index'}.html`,
+        `${pagePath !== '/' ? pagePath.slice(1) : 'index'}.html`,
       ), 'utf-8')
 
       // const Client = props.options.client
