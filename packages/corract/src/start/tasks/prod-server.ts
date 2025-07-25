@@ -19,6 +19,9 @@ export async function startProd(props: {
     options: props.options,
   })
 
+  if (!process.env.PORT) {
+    console.warn('No PORT environment variable set, using port specified in config')
+  }
   // const extendedPagesConfig = extendPagesConfig(props.options.pages)
   const port = process.env.PORT || props.options.port
   server.listen(port)
