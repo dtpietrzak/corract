@@ -21,6 +21,6 @@ export async function startProd(props: {
 
   // const extendedPagesConfig = extendPagesConfig(props.options.pages)
 
-  server.listen(props.options.port)
+  server.listen(process.env.PORT || props.options.port)
   console.info(`Corract dev server running at http://localhost:${props.options.port}`)
 }
