@@ -1,6 +1,6 @@
 import type { PagesConfigExtended } from 'src/types'
 
-import fs from 'node:fs/promises'
+import { forceWriteFile } from '../_utils'
 
 type LayoutVariants = Record<string, {
   path: string;
@@ -152,6 +152,8 @@ if (typeof window !== 'undefined') {
 `
 
   // Write directly to the app's src/app-client.tsx
-  await fs.writeFile('src/app-client.tsx', content)
+  await forceWriteFile('src/app-client.tsx', content)
   console.info('Generated src/app-client.tsx')
 }
+
+

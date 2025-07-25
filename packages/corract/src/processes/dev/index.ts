@@ -1,1 +1,1 @@
-export * from './register-pages-to-express'
+export * from './register-pages-to-express-dev'

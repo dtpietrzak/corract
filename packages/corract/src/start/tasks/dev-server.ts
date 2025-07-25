@@ -5,7 +5,7 @@ import { createServer } from 'vite'
 import express from 'express'
 
 import { extendPagesConfig, buildPages, buildAppClient } from 'src/processes/shared'
-import { registerPagesToExpress } from 'src/processes/dev'
+import { registerPagesToExpressDev } from 'src/processes/dev'
 
 export async function startDev(props: {
   options: StartCorractOptions<PagesConfig>;
@@ -26,7 +26,7 @@ export async function startDev(props: {
 
   console.info('Using Vite config at:', vite.config.configFile, '\n')
 
-  await registerPagesToExpress({
+  await registerPagesToExpressDev({
     server: server,
     vite: vite,
     options: props.options,

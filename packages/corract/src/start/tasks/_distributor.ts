@@ -1,6 +1,7 @@
 import type { Mode, PagesConfig, StartCorractOptions } from 'src/types'
 import { startDev } from './dev-server'
 import { startBuild } from './build'
+import { startProd } from 'src/start/tasks/prod-server';
 
 export const runtimeDistributor = (props: {
   mode: Mode;
@@ -9,7 +10,7 @@ export const runtimeDistributor = (props: {
   const scriptMap = {
     dev: 'dev-server.ts',
     build: 'build.ts',
-    start: 'prod-server.ts',
+    prod: 'prod-server.ts',
   }
 
   if (!scriptMap[props.mode]) {
@@ -25,6 +26,11 @@ export const runtimeDistributor = (props: {
       break
     case 'build':
       startBuild({
+        options: props.options,
+      })
+      break
+    case 'prod':
+      startProd({
         options: props.options,
       })
       break

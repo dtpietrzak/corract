@@ -5,6 +5,22 @@ const someMemoryStore = {
   lastCall: null as string | null,
   currentRoutePath: null as string | null,
   initialRoutePath: null as string | null,
+  testingArray: [{
+    key1: 'value1',
+    key2: undefined as string | undefined,
+  }, {
+    key1: 'value2',
+    key2: undefined as string | undefined,
+  }],
+  testingObject: {
+    key1: 'value1',
+    key2: undefined as string | undefined,
+  },
+  testingNestedObject: {
+    nestedKey: {
+      nestedValue: 'nestedValue',
+    },
+  },
 }
 
 export const globalMiddleware = async(props: MiddlewareProps) => {

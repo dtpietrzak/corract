@@ -1,14 +1,12 @@
 import type { Express, NextFunction, RequestHandler, Response } from 'express'
-import type { ViteDevServer } from 'vite'
 import type { CorractRequest, PagesConfig, StartCorractOptions } from 'src/types'
 
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import render from 'preact-render-to-string'
 
-export const registerPagesToExpress = async(props: {
+export const registerPagesToExpressProd = async(props: {
   server: Express;
-  vite: ViteDevServer;
   options: StartCorractOptions<PagesConfig>;
 }): Promise<void> => {
   for (const pagePath of Object.keys(props.options.pages)) {
@@ -30,7 +28,7 @@ export const registerPagesToExpress = async(props: {
           next()
         } catch(error) {
           // Handle any errors from the middleware
-          props.vite.config.logger.error(`Error in middleware for ${req.url}: ${error}`)
+          console.error(`Error in middleware for ${req.url}: ${error}`)
           res.status(500).send('Internal Server Error')
         }
       }
@@ -44,30 +42,28 @@ export const registerPagesToExpress = async(props: {
         return
       }
 
-      props.vite.config.logger.info(`Transforming HTML for ${req.url}`)
-      const baseHtml = await fs.readFile(path.resolve('index.html'), 'utf-8')
+      const pageHtml = await fs.readFile(path.resolve(
+        '.dist',
+        'static-html',
+        `${pagePath !== '/' ? pagePath : 'index'}.html`,
+      ), 'utf-8')
 
-      const Client = props.options.client
-      Client.props = {
-        ssrPagePath: pagePath as keyof PagesConfig,
-        middlewareData: req.__SSR_DATA__,
-      }
-      const clientHtml = render(Client)
+      // const Client = props.options.client
+      // Client.props = {
+      //   ssrPagePath: pagePath as keyof PagesConfig,
+      //   middlewareData: req.__SSR_DATA__,
+      // }
+      // const clientHtml = render(Client)
 
-      const data = req.__SSR_DATA__ || {}
-      const script = `<script>window.__SSR_DATA__ = ${
-        JSON.stringify(data)
-      };</script>`
-      const dataInjected = baseHtml
-        .replace('</body>', `${script}</body>`)
-        .replace('<div id="dry-app">', `<div id="dry-app">${clientHtml}</div>`)
+      // const data = req.__SSR_DATA__ || {}
+      // const script = `<script>window.__SSR_DATA__ = ${
+      //   JSON.stringify(data)
+      // };</script>`
+      // const dataInjected = pageHtml
+      //   .replace('</body>', `${script}</body>`)
+      //   .replace('<div id="dry-app">', `<div id="dry-app">${clientHtml}</div>`)
 
-      const transformed = await props.vite.transformIndexHtml(
-        req.url,
-        dataInjected,
-      )
-
-      res.send(transformed)
+      res.send(pageHtml)
     }
 
     // Register route with middleware and handler

@@ -15,6 +15,8 @@ export type MiddlewareFunction<Data extends SuperJsonValue = any> = (
   title?: string;
   meta?: string[];
   data: Data;
+  defaults?: Record<string, SuperJsonValue>;
+  prerender?: boolean;
 }>
 
 export type MiddlewareReturn<T extends MiddlewareFunction> = T extends
