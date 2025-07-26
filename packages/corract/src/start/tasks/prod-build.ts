@@ -25,6 +25,7 @@ export async function startProdBuild(props: {
 
   await viteBuild({
     appType: 'spa',
+
   })
 
   await mergeStaticHtmlToDist({

@@ -20,9 +20,11 @@ export const htmlPlaceholderRender = async(
     dataInjectedHtml = dataInjectedHtml.replace(new RegExp(placeholder, 'g'), replacement)
   })
 
-  const finalHtml = pageHtml
-    .replace('<script id="__CORRACT_SSR_DATA__">window.__SSR_DATA__={};</script>', `<script id="__CORRACT_SSR_DATA__">window.__SSR_DATA__=${JSON.stringify(__SSR_DATA__)};</script>`)
-    .replace('<div id="dry-app">', `<div id="dry-app">${dataInjectedHtml}</div>`)
+  const emptyScript = '<script id="__CORRACT_SSR_DATA__">window.__SSR_DATA__={};</script>'
+  const filledScript = `<script id="__CORRACT_SSR_DATA__">window.__SSR_DATA__=${JSON.stringify(__SSR_DATA__)};</script>`
+
+  const finalHtml = dataInjectedHtml
+    .replace(emptyScript, filledScript)
 
   return finalHtml
 }

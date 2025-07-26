@@ -26,8 +26,6 @@ export const useServerState = <
 } => {
   const context = useContext(ServerStateContext)
 
-  console.log('context', context)
-
   if (!pageConfig.middleware || pageConfig.middleware.length === 0) {
     console.error('You\'re trying to use `useServerState` without any middleware defined for the route in the route config - app-def.ts')
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,6 +34,7 @@ export const useServerState = <
 
   return pageConfig.middleware.map((middleware) => {
     const middlewareResult = context[middleware.name] as { data: unknown }
+    if (!middlewareResult) throw new Error(`No middleware result found for ${middleware.name} in the server state context: ${JSON.stringify(context)}`)
     return middlewareResult?.data
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }) as any

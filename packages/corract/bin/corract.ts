@@ -1,6 +1,3 @@
-#!/usr/bin/env node
-/* eslint-disable no-undef */
-
 import { spawn } from 'child_process'
 import fs from 'node:fs/promises'
 
