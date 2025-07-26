@@ -1,9 +1,9 @@
 import type { Express, NextFunction, RequestHandler, Response } from 'express'
 import type { CorractRequest, PagesConfig, StartCorractOptions } from 'src/types'
 
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import render from 'preact-render-to-string'
+import { staticRender } from './renders/static-render'
+import { htmlPlaceholderRender } from './renders/html-placeholder-render'
+import { runtimeRender } from './renders/runtime-render'
 
 export const registerPagesToExpressProd = async(props: {
   server: Express;
@@ -15,13 +15,20 @@ export const registerPagesToExpressProd = async(props: {
     // Destructure middleware or use empty array if none
     const middlewares = pageConfig.middleware || []
     const middlewareFunctions: RequestHandler[] = middlewares.map((middleware) => {
-      return async(req: CorractRequest, res: Response, next: NextFunction) => {
+      return async(
+        req: CorractRequest,
+        res: Response,
+        next: NextFunction,
+      ) => {
         try {
+          if (!req.__MIDDLEWARE_LENGTH__) req.__MIDDLEWARE_LENGTH__ = 0
+          req.__MIDDLEWARE_LENGTH__++
           // Call the middleware function and get derived data
           const middlewareResult = await middleware({
             req: req,
             res: res,
           })
+          if (middlewareResult.runtimeRender) req.__RENDER_AT_RUNTIME__ = true
           // Attach the derived data to the request object
           if (!req.__SSR_DATA__) req.__SSR_DATA__ = {}
           req.__SSR_DATA__[middleware.name] = middlewareResult
@@ -35,35 +42,40 @@ export const registerPagesToExpressProd = async(props: {
     })
 
     // Compose the final handler
-    const handler = async(req: CorractRequest, res: Response) => {
+    const handler = async(
+      req: CorractRequest,
+      res: Response,
+    ) => {
       if (req.header('X-Client-App-Request') === 'true') {
         // If this is a client app request, just return the SSR data
         res.json(req.__SSR_DATA__)
         return
       }
 
-      const pageHtml = await fs.readFile(path.resolve(
-        '.dist',
-        'static-html',
-        `${pagePath !== '/' ? pagePath.slice(1) : 'index'}.html`,
-      ), 'utf-8')
+      if (
+        !req.__SSR_DATA__ ||
+        !req.__MIDDLEWARE_LENGTH__ ||
+        req.__MIDDLEWARE_LENGTH__ === 0
+      ) {
+        const render = await staticRender(pagePath)
+        res.send(render)
+        return
+      }
 
-      // const Client = props.options.client
-      // Client.props = {
-      //   ssrPagePath: pagePath as keyof PagesConfig,
-      //   middlewareData: req.__SSR_DATA__,
-      // }
-      // const clientHtml = render(Client)
+      if (!req.__RENDER_AT_RUNTIME__) {
+        const render = await htmlPlaceholderRender(pagePath, req.__SSR_DATA__)
+        res.send(render)
+        return
+      }
 
-      // const data = req.__SSR_DATA__ || {}
-      // const script = `<script>window.__SSR_DATA__ = ${
-      //   JSON.stringify(data)
-      // };</script>`
-      // const dataInjected = pageHtml
-      //   .replace('</body>', `${script}</body>`)
-      //   .replace('<div id="dry-app">', `<div id="dry-app">${clientHtml}</div>`)
-
-      res.send(pageHtml)
+      // RUNTIME RENDER
+      const render = await runtimeRender(
+        pagePath,
+        req.__SSR_DATA__,
+        props.options.client,
+      )
+      res.send(render)
+      return
     }
 
     // Register route with middleware and handler

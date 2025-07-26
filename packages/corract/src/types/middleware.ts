@@ -7,17 +7,19 @@ export type MiddlewareProps = {
   res: Response;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type MiddlewareFunction<Data extends SuperJsonValue = any> = (
-  // eslint-disable-next-line no-unused-vars
-  props: MiddlewareProps,
-) => Promise<{
+export type MiddlewareResult<Data extends SuperJsonValue = SuperJsonValue> = {
   title?: string;
   meta?: string[];
   data: Data;
   defaults?: Record<string, SuperJsonValue>;
-  prerender?: boolean;
-}>
+  runtimeRender?: boolean;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type MiddlewareFunction<Data extends SuperJsonValue = any> = (
+  // eslint-disable-next-line no-unused-vars
+  props: MiddlewareProps,
+) => Promise<MiddlewareResult<Data>>
 
 export type MiddlewareReturn<T extends MiddlewareFunction> = T extends
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, no-unused-vars

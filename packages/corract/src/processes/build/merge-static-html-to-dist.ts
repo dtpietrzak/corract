@@ -14,7 +14,7 @@ export const mergeStaticHtmlToDist = async(props: {
 
     const precompiledPage = await fs.readFile(path.resolve(`.dist-temp/${pagePath !== '/' ? pagePath : 'index'}.txt`), 'utf-8')
 
-    const script = `<script>window.__SSR_DATA__ = {};</script>`
+    const script = `<script id="__CORRACT_SSR_DATA__">window.__SSR_DATA__={};</script>`
     const dataInjected = baseHtml
       .replace('</body>', `${script}</body>`)
       .replace('<div id="dry-app">', `<div id="dry-app">${precompiledPage}</div>`)

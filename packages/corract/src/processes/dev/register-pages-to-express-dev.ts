@@ -55,7 +55,7 @@ export const registerPagesToExpressDev = async(props: {
       const clientHtml = render(Client)
 
       const data = req.__SSR_DATA__ || {}
-      const script = `<script>window.__SSR_DATA__ = ${
+      const script = `<script id="__CORRACT_SSR_DATA__">window.__SSR_DATA__ = ${
         JSON.stringify(data)
       };</script>`
       const dataInjected = baseHtml

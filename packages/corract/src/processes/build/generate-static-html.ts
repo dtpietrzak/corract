@@ -1,6 +1,5 @@
 import type { PagesConfig, StartCorractOptions, SuperJsonValue } from 'src/types'
 
-import fs from 'node:fs/promises'
 import path from 'node:path'
 import { forceWriteFile } from '../_utils'
 
@@ -15,8 +14,6 @@ export const generateStaticHtml = async(props: {
   const project = new Project({
     tsConfigFilePath: './tsconfig.json',
   })
-
-  const baseHtml = await fs.readFile(path.resolve('index.html'), 'utf-8')
 
   const tsAst_pagesConfig = project
     .addSourceFileAtPath(path.resolve('src/app-def.ts'))
@@ -102,18 +99,18 @@ function getMiddlewareTemplateObject(
   type: TsMorphType,
   path: string = '',
 ): SuperJsonValue {
-  const makePlaceholder = (typeAsString: string) => {
-    return `__SSR_%${routePath},${middlewareFnName}.${path},${typeAsString}%_SSR__`
+  const makePlaceholder = () => {
+    return `__SSR_%${routePath},${middlewareFnName}.${path}%_SSR__`
   }
 
-  if (type.isString()) return makePlaceholder('String')
-  if (type.isNumber()) return makePlaceholder('Number')
-  if (type.isBoolean()) return makePlaceholder('Boolean')
-  if (type.isNull()) return makePlaceholder('Null')
-  if (type.isUndefined()) return makePlaceholder('Undefined')
-  if (type.isBigInt()) return makePlaceholder('BigInt')
-  if (type.getText() === 'Date') return makePlaceholder('Date')
-  if (type.getText() === 'RegExp') return makePlaceholder('RegExp')
+  if (type.isString()) return makePlaceholder()
+  if (type.isNumber()) return makePlaceholder()
+  if (type.isBoolean()) return makePlaceholder()
+  if (type.isNull()) return makePlaceholder()
+  if (type.isUndefined()) return makePlaceholder()
+  if (type.isBigInt()) return makePlaceholder()
+  if (type.getText() === 'Date') return makePlaceholder()
+  if (type.getText() === 'RegExp') return makePlaceholder()
   if (type.getText().startsWith('Set<')) return [] // collapse Set to array
   if (type.getText().startsWith('Map<')) return {} // collapse Map to object
   if (type.isArray()) return []
