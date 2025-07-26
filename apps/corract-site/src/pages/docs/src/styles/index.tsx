@@ -4,7 +4,7 @@ const MyPage: Page<'/docs/src/styles', AppPages> = (props) => {
   return (
     <>
       <h1>My Page</h1>
-      <a href="/">Go Home</a>
+      <a href={'/'}>Go Home</a>
     </>
   )
 }

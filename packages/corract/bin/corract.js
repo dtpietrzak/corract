@@ -21,7 +21,6 @@ const run = async() => {
       await fs.writeFile(appClient, defaultClientCode)
     })
 
-
   try {
     const child = spawn('tsx', [appEntry, ...args.slice(1)], {
       stdio: 'inherit',

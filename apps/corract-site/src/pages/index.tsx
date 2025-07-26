@@ -1,5 +1,5 @@
 import { Page } from 'corract'
-import { Logo } from 'src/assets/Logo'
+import { Logo } from 'src/components/Logo'
 import { Text, FlexCol } from 'src/components'
 
 export const Home: Page<'/', AppPages> = (props) => {

@@ -1,5 +1,5 @@
 {
-  "name": "basic-app",
+  "name": "corract-site",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -17,6 +17,8 @@
     "build-dev": "corract-cli dev-build",
     "dev": "corract-cli dev-serve",
     "build": "corract-cli prod-build",
-    "prod": "corract-cli prod-serve"
+    "prod": "corract-cli prod-serve",
+    "types": "tsc --noEmit",
+    "lint": "eslint"
   }
 }
