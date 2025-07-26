@@ -1,7 +1,7 @@
 import type { JSX } from 'corract'
 import { colors } from 'src/styles'
 
-export type LinkProps<E extends boolean = false> = JSX.AnchorHTMLAttributes<HTMLAnchorElement> & {
+export type LinkProps<E extends boolean = boolean> = JSX.AnchorHTMLAttributes<HTMLAnchorElement> & {
   href: E extends true ? string : AppPaths;
   external?: E;
   color: keyof typeof colors['link'];

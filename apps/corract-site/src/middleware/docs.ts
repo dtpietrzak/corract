@@ -10,6 +10,8 @@ export const docsMiddleware = async(props: MiddlewareProps) => {
   someMemoryStore.calls += 1
   someMemoryStore.lastCall = new Date().toISOString()
 
+  console.info(`Docs Middleware called ${someMemoryStore.calls} times. Last call at ${someMemoryStore.lastCall}`)
+
   return {
     meta: [],
     title: '',

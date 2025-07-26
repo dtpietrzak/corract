@@ -1,5 +1,5 @@
 import { type LayoutProps } from 'corract'
-import { MiniLogo } from 'src/assets'
+import { MiniLogo } from 'src/components'
 import { FlexCol, Link, TextInput, Text } from 'src/components'
 
 
@@ -42,6 +42,7 @@ const Navbar = (props: LayoutProps) => {
             <li>
               <Link
                 target={'_blank'}
+                external={true}
                 href={'https://github.com/dtpietrzak/corract'}
                 color={'black.hard'}
               >
