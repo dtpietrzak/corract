@@ -4,12 +4,16 @@ import type { PagesConfig, StartCorractOptions } from 'src/types'
 import path from 'node:path'
 import express from 'express'
 
-// import { extendPagesConfig } from 'src/processes/shared'
+import { startProdBuild } from './prod-build'
 import { registerPagesToExpressProd } from 'src/processes/prod'
 
-export async function startProd(props: {
+export async function startProdServe(props: {
   options: StartCorractOptions<PagesConfig>;
 }) {
+  await startProdBuild({
+    options: props.options,
+  })
+
   const server = express()
 
   server.use('/assets', express.static(path.resolve('.dist', 'assets')))
@@ -22,8 +26,8 @@ export async function startProd(props: {
   if (!process.env.PORT) {
     console.warn('No PORT environment variable set, using port specified in config')
   }
-  // const extendedPagesConfig = extendPagesConfig(props.options.pages)
+
   const port = process.env.PORT || props.options.port
   server.listen(port)
-  console.info(`Corract dev server running at http://localhost:${port}`)
+  console.info(`Corract prod server running at http://localhost:${port}`)
 }

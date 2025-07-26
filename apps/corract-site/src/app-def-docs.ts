@@ -2,9 +2,20 @@ import { docsMiddleware } from './middleware/docs'
 import Navbar from './layouts/Navbar'
 import Docs from './layouts/Docs'
 
+const layouts = {
+  navbar: {
+    component: Navbar,
+    middleware: [],
+  },
+  docs: {
+    component: Docs,
+    middleware: [],
+  },
+}
+
 const docsPageConfig = {
   middleware: [docsMiddleware],
-  layouts: [Navbar, Docs],
+  layouts: [layouts.navbar, layouts.docs],
 } as const
 
 export const appDefDocs = {

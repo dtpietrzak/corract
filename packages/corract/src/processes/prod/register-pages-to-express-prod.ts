@@ -46,6 +46,8 @@ export const registerPagesToExpressProd = async(props: {
       req: CorractRequest,
       res: Response,
     ) => {
+      console.info(`Handling request for ${req.url}`)
+
       if (req.header('X-Client-App-Request') === 'true') {
         // If this is a client app request, just return the SSR data
         res.json(req.__SSR_DATA__)
@@ -57,17 +59,20 @@ export const registerPagesToExpressProd = async(props: {
         !req.__MIDDLEWARE_LENGTH__ ||
         req.__MIDDLEWARE_LENGTH__ === 0
       ) {
+        console.info('static render')
         const render = await staticRender(pagePath)
         res.send(render)
         return
       }
 
       if (!req.__RENDER_AT_RUNTIME__) {
+        console.info('placeholder render')
         const render = await htmlPlaceholderRender(pagePath, req.__SSR_DATA__)
         res.send(render)
         return
       }
 
+      console.info('runtime render')
       // RUNTIME RENDER
       const render = await runtimeRender(
         pagePath,

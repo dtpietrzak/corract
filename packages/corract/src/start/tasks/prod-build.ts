@@ -6,7 +6,7 @@ import { build as viteBuild } from 'vite'
 import { extendPagesConfig, buildPages, buildAppClient } from 'src/processes/shared'
 import { generateStaticHtml, mergeStaticHtmlToDist, cleanUp } from 'src/processes/build'
 
-export async function startBuild(props: {
+export async function startProdBuild(props: {
   options: StartCorractOptions<PagesConfig>;
 }) {
   const extendedPagesConfig = extendPagesConfig(props.options.pages)
@@ -33,5 +33,5 @@ export async function startBuild(props: {
 
   await cleanUp()
 
-  console.log('build complete')
+  console.info('Prod Build Complete')
 }

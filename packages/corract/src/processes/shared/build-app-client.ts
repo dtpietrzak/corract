@@ -26,19 +26,19 @@ export const buildAppClient = async(props: {
       currentPaths.push({
         path: pagePath,
         pageName: config.pageName,
-        layoutName: config.layouts[0].name,
-        nested: config.layouts[0].name,
+        layoutName: config.layouts[0].component.name,
+        nested: config.layouts[0].component.name,
       })
       layoutVariants[0][''] = currentPaths
     }
     for (let i = 0; i < config.layouts?.length; i++) {
       if (!layoutVariants[i + 1]) layoutVariants[i + 1] = {}
       const nested = config.layouts[i + 1]
-        ? `${config.layouts[i]?.name}_${config.layouts[i + 1]?.name}`
+        ? `${config.layouts[i].component?.name}_${config.layouts[i + 1].component?.name}`
         : ''
-      let currentLayout = config.layouts[i]?.name
+      let currentLayout = config.layouts[i].component?.name
       for (let j = 0; j < i; j++) {
-        const previousLayout = config.layouts[j]?.name
+        const previousLayout = config.layouts[j].component?.name
         if (previousLayout) {
           currentLayout = `${previousLayout}_${currentLayout}`
         }
@@ -47,7 +47,7 @@ export const buildAppClient = async(props: {
       currentPaths.push({
         path: pagePath,
         pageName: config.pageName,
-        layoutName: config.layouts[i].name,
+        layoutName: config.layouts[i].component.name,
         nested: nested,
       })
       layoutVariants[i + 1][currentLayout] = currentPaths
@@ -57,7 +57,7 @@ export const buildAppClient = async(props: {
   const layouts = Array.from(new Set(Object
     .values(props.extendedPagesConfig)
     .flatMap((config) => config.layouts || [])
-    .map((layout) => layout.name))).map((name) => {
+    .map((layout) => layout.component.name))).map((name) => {
     return {
       name,
       filePath: `./layouts/${name}`,

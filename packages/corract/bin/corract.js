@@ -2,35 +2,37 @@
 /* eslint-disable no-undef */
 
 import { spawn } from 'child_process'
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 
 const args = process.argv.slice(2)
 process.env.CORRACT_MODE = args[0]
 
-
 const appEntry = `${process.cwd()}/src/app-start.tsx`
-const appClient = `${process.cwd()}/src/app-client.tsx`
 
-const tempClientCode = `export const Client = () => <></>`
+const run = async() => {
+  const appClient = `${process.cwd()}/src/app-client.tsx`
 
-fs.rm(appClient, { force: true }, (err) => {
-  if (err) {
-    console.error(`Error removing app client file: ${err.message}`)
-  } else {
-    console.info(`Removed app client file: ${appClient}`)
-    fs.writeFile(appClient, tempClientCode, (writeErr) => {
-      if (writeErr) {
-        console.error(`Error writing temporary client code: ${writeErr.message}`)
-      } else {
-        const child = spawn('tsx', [appEntry, ...args.slice(1)], {
-          stdio: 'inherit',
-          env: process.env,
-        })
-
-        child.on('exit', (code) => process.exit(code))
-      }
+  fs.access(appClient, fs.constants.F_OK)
+    .then(() => {})
+    .catch(async() => {
+      // If app-client.tsx does not exist, create it with a default export
+      const defaultClientCode = `export const Client = () => <></>
+`
+      await fs.writeFile(appClient, defaultClientCode)
     })
+
+
+  try {
+    const child = spawn('tsx', [appEntry, ...args.slice(1)], {
+      stdio: 'inherit',
+      env: process.env,
+    })
+
+    child.on('exit', (code) => process.exit(code))
+  } catch(err) {
+    console.error(`Error during execution: ${err instanceof Error ? err.message : 'Unknown error'}`)
+    process.exit(1)
   }
-})
+}
 
-
+run()

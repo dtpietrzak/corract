@@ -14,9 +14,9 @@
     "typescript": "^5.8.3"
   },
   "scripts": {
-    "dev": "corract-cli dev",
-    "build-dev": "corract-cli dev --build",
-    "build": "corract-cli build",
-    "prod": "corract-cli prod"
+    "build-dev": "corract-cli dev-build",
+    "dev": "corract-cli dev-serve",
+    "build": "corract-cli prod-build",
+    "prod": "corract-cli prod-serve"
   }
 }

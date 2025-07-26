@@ -1,6 +1,7 @@
 import type { PagesConfigExtended } from 'src/types'
 
 import fs from 'node:fs/promises'
+import { fileExists } from '../_utils'
 
 export const buildPages = async(props: {
   extendedPagesConfig: PagesConfigExtended;
@@ -42,13 +43,4 @@ export default MyPage
 
     await fs.writeFile(filePath, pageTemplate)
   }))
-}
-
-async function fileExists(path: string): Promise<boolean> {
-  try {
-    await fs.access(path, fs.constants.F_OK)
-    return true
-  } catch {
-    return false
-  }
 }

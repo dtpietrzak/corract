@@ -2,10 +2,17 @@ import Navbar from './layouts/Navbar'
 // import Profile from './layouts/Profile'
 import { appDefDocs } from './app-def-docs'
 
+export const layouts = {
+  navbar: {
+    component: Navbar,
+    middleware: [],
+  },
+}
+
 export const pages = {
   '/': {
     middleware: [],
-    layouts: [Navbar],
+    layouts: [layouts.navbar],
   },
   ...appDefDocs,
 } as const

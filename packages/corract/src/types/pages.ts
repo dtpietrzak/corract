@@ -1,5 +1,5 @@
 import type { MiddlewareFunction } from './middleware'
-import type { LayoutComponent } from './layouts'
+import type { LayoutConfig } from './layouts'
 import type { SuperJsonValue } from './super-json'
 import type { JSX } from 'preact'
 
@@ -8,7 +8,7 @@ export type PageConfig<
   MW extends readonly MiddlewareFunction<SuperJsonValue>[] = readonly MiddlewareFunction<SuperJsonValue>[],
 > = {
   middleware?: MW;
-  layouts?: readonly LayoutComponent[];
+  layouts?: readonly LayoutConfig[];
   meta?: readonly string[];
   title?: string;
 }
