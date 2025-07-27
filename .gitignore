@@ -27,7 +27,7 @@ out/
 build
 dist
 !packages/corract/src/processes/build
-packages/corract/bin/corract.js
+# packages/corract/bin/corract.js
 
 # Debug
 npm-debug.log*
