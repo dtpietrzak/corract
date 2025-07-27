@@ -1,12 +1,23 @@
 import { Page } from 'corract'
+import { Link } from 'src/components'
+import { Header } from 'src/pages/docs/_components'
 
-const MyPage: Page<'/docs/third-party/eslint', AppPages> = (props) => {
+const DocsEslint: Page<'/docs/third-party/eslint', AppPages> = (props) => {
   return (
     <>
-      <h1>My Page</h1>
-      <a href="/">Go Home</a>
+      <Header>
+        ESLint
+      </Header>
+      <Link
+        external
+        target={'_blank'}
+        href={'https://eslint.org'}
+        color={'black.hard'}
+      >
+        Check out ESLint's documentation
+      </Link>
     </>
   )
 }
 
-export default MyPage
+export default DocsEslint

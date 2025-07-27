@@ -1,12 +1,20 @@
-import { Page } from 'corract'
+/* eslint-disable @stylistic/max-len */
 
-const MyPage: Page<'/docs/app/style', AppPages> = (props) => {
+import { Page } from 'corract'
+import { Text } from 'src/components'
+import { Header, Code } from 'src/pages/docs/_components'
+
+const DocsAppStyle: Page<'/docs/app/style', AppPages> = (props) => {
   return (
     <>
-      <h1>My Page</h1>
-      <a href="/">Go Home</a>
+      <Header>
+        <Code>app-style.css</Code>
+      </Header>
+      <Text tag={'p'} color={'black.soft'}>
+        The <Code>app-style.css</Code> file is where you define the global styles for your Corract application. It allows you to set up the base styles that will be applied across all components and pages in your app. This file is essential for maintaining a consistent look and feel throughout your application.
+      </Text>
     </>
   )
 }
 
-export default MyPage
+export default DocsAppStyle

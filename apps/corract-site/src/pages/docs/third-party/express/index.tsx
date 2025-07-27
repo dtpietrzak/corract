@@ -1,12 +1,23 @@
 import { Page } from 'corract'
+import { Link } from 'src/components'
+import { Header } from 'src/pages/docs/_components'
 
-const MyPage: Page<'/docs/third-party/express', AppPages> = (props) => {
+const DocsExpress: Page<'/docs/third-party/express', AppPages> = (props) => {
   return (
     <>
-      <h1>My Page</h1>
-      <a href="/">Go Home</a>
+      <Header>
+        Express
+      </Header>
+      <Link
+        external
+        target={'_blank'}
+        href={'https://expressjs.com'}
+        color={'black.hard'}
+      >
+        Check out Express' documentation
+      </Link>
     </>
   )
 }
 
-export default MyPage
+export default DocsExpress

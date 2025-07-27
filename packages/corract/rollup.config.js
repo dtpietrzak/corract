@@ -42,12 +42,12 @@ export default [
   //     entryFileNames: '[name].js',
   //   },
   // },
-  {
-    input: 'bin/corract.ts',
-    output: {
-      file: 'bin/corract.js',
-      format: 'cjs',
-      banner: '#!/usr/bin/env node',
-    },
-  },
+  // {
+  //   input: 'bin/corract.ts',
+  //   output: {
+  //     file: 'bin/corract.js',
+  //     format: 'cjs',
+  //     banner: '#!/usr/bin/env node',
+  //   },
+  // },
 ]

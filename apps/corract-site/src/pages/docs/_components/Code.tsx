@@ -7,7 +7,12 @@ export type CodeProps = {
 export const Code = (props: CodeProps) => {
   return (
     <code className={`inline-code`}>
-      {props.children}
+      <span style={{
+        fontSize: '0.85em',
+      }}
+      >
+        {props.children}
+      </span>
     </code>
   )
 }

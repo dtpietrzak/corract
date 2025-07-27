@@ -1,12 +1,23 @@
 import { Page } from 'corract'
+import { Link } from 'src/components'
+import { Header } from 'src/pages/docs/_components'
 
-const MyPage: Page<'/docs/third-party/tailwind', AppPages> = (props) => {
+const DocsTailwind: Page<'/docs/third-party/tailwind', AppPages> = (props) => {
   return (
     <>
-      <h1>My Page</h1>
-      <a href="/">Go Home</a>
+      <Header>
+        Tailwind
+      </Header>
+      <Link
+        external
+        target={'_blank'}
+        href={'https://tailwindcss.com'}
+        color={'black.hard'}
+      >
+        Check out Tailwind's documentation
+      </Link>
     </>
   )
 }
 
-export default MyPage
+export default DocsTailwind

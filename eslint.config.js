@@ -160,7 +160,7 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'off',
     },
     ignores: [
-      'node_modules',
+      'node_modules', 'packages/corract/bin/corract.js',
     ],
   },
 ]

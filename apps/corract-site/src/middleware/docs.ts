@@ -1,4 +1,4 @@
-import type { MiddlewareProps } from 'corract'
+import type { MiddlewareProps, MiddlewareResult } from 'corract'
 
 const someMemoryStore = {
   calls: 0,
@@ -16,5 +16,5 @@ export const docsMiddleware = async(props: MiddlewareProps) => {
     meta: [],
     title: '',
     data: someMemoryStore,
-  }
+  } satisfies MiddlewareResult
 }

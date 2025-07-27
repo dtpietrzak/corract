@@ -1,6 +1,7 @@
 import Navbar from './layouts/Navbar'
 // import Profile from './layouts/Profile'
 import { appDefDocs } from './app-def-docs'
+import { PagesConfig } from 'corract'
 
 export const layouts = {
   navbar: {
@@ -15,7 +16,7 @@ export const pages = {
     layouts: [layouts.navbar],
   },
   ...appDefDocs,
-} as const
+} as const satisfies PagesConfig
 
 export const api = {
   '/api/profile': ['GET', 'POST', 'PATCH', 'DELETE'],

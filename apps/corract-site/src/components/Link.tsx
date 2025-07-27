@@ -1,11 +1,21 @@
 import type { JSX } from 'corract'
 import { colors } from 'src/styles'
 
-export type LinkProps<E extends boolean = boolean> = JSX.AnchorHTMLAttributes<HTMLAnchorElement> & {
-  href: E extends true ? string : AppPaths;
-  external?: E;
+type InternalLinkProps = {
+  external?: false;
+  href: AppPaths;
+}
+
+type ExternalLinkProps = {
+  external: true;
+  href: string;
+}
+
+type SharedProps = Omit<JSX.AnchorHTMLAttributes<HTMLAnchorElement>, 'color' | 'href'> & {
   color: keyof typeof colors['link'];
 }
+
+type LinkProps = SharedProps & (InternalLinkProps | ExternalLinkProps)
 
 export const Link = (props: LinkProps) => {
   const { color, className, ...rest } = props

@@ -1,12 +1,23 @@
 import { Page } from 'corract'
+import { Link } from 'src/components'
+import { Header } from 'src/pages/docs/_components'
 
-const MyPage: Page<'/docs/third-party/vite', AppPages> = (props) => {
+const DocsVite: Page<'/docs/third-party/vite', AppPages> = (props) => {
   return (
     <>
-      <h1>My Page</h1>
-      <a href="/">Go Home</a>
+      <Header>
+        Vite
+      </Header>
+      <Link
+        external
+        target={'_blank'}
+        href={'https://vite.dev'}
+        color={'black.hard'}
+      >
+        Check out Vite's documentation
+      </Link>
     </>
   )
 }
 
-export default MyPage
+export default DocsVite
